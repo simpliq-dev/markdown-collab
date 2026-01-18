@@ -1,0 +1,54 @@
+{
+  "name": "codex-collab",
+  "displayName": "Codex Collab",
+  "description": "In-file threaded chat for Markdown (v1 scaffold).",
+  "version": "0.0.1",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown",
+    "onView:codexCollab.threadsView",
+    "onCommand:codexCollab.refreshThreads"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "codexCollab.threadsView",
+          "name": "Threads",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "codexCollab.refreshThreads",
+        "title": "Codex Collab: Refresh Threads"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "codexCollab.refreshThreads",
+          "when": "view == codexCollab.threadsView",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node ./node_modules/typescript/bin/tsc -p .",
+    "watch": "node ./node_modules/typescript/bin/tsc -w -p ."
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.88.0",
+    "typescript": "^5.3.3"
+  }
+}
