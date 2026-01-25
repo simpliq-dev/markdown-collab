@@ -4,6 +4,19 @@ This file defines the **Codex Collab** read/respond rules for a *file-backed* co
 
 This is intended to be **referenced from `AGENTS.md`** so that “how the agent should behave” lives in one place.
 
+## Quick Start (What This Tool Is / What You Do)
+
+Codex Collab treats each `CMT:THREAD` block as a **mini chat session embedded in Markdown**.
+
+When asked to “run Codex” / “respond” / “process threads”, do this:
+
+1) Use the **active Markdown file** (unless the user explicitly provides other file paths).
+2) Find all `CMT:THREAD` blocks and determine which are **pending** (Section 2).
+3) For each pending thread (top-to-bottom in file order):
+   - Read context per `ref` (Section 3).
+   - Append exactly one new `CMT:MSG` with `role=A` before the thread end marker.
+4) Do not change any non-thread Markdown unless explicitly requested.
+
 ## 0) Core Principles (Non‑Negotiables)
 
 - **File-backed only**: the Markdown file is the source of truth. No hidden state, no external services.
@@ -69,13 +82,30 @@ When responding in a thread, the agent must gather context based on `ref`:
 - The reference context is the **entire file content** (excluding no content; thread blocks are allowed to be read too).
 
 ### 3.2 `ref=prev=N`
-- Interpret the Markdown file as a sequence of “Markdown blocks” (paragraph-like blocks).
+- Interpret the Markdown file as a sequence of “Markdown blocks” (defined below).
 - Find the thread’s anchor location (where the thread block appears in the file).
 - The reference context is the **previous `N` Markdown blocks** immediately before the anchor.
 - If `N` is missing, treat it as `1`.
 
-Decision point (if not already defined by the project):
-- Define precisely what constitutes a “Markdown block” (e.g., separated by one or more blank lines, and excluding thread blocks).
+#### Definition: “Markdown block” (locked for v1)
+
+For `ref=prev=N`, a “Markdown block” is the unit the UI uses for anchoring. It is:
+
+- Always computed **excluding all thread ranges** (`CMT:THREAD ... /CMT:THREAD`) so thread comments do not count as blocks.
+- The contiguous block determined by Markdown structure, in this priority order:
+  1) A fenced code block (from opening fence line to closing fence line, inclusive).
+  2) A single heading line (`# ...`).
+  3) A contiguous blockquote block (lines starting with `>`).
+  4) A contiguous list block (list items and their continuation lines).
+  5) Otherwise, a paragraph block (contiguous non-blank lines).
+
+If fewer than `N` blocks exist before the anchor, use all available preceding blocks.
+
+## 3.3 Scope and ordering (to avoid guessing)
+
+- Default scope is the **active editor Markdown file only**.
+- If the user wants multi-file processing, they must explicitly name the file paths.
+- When processing threads, use **file order** (top-to-bottom by thread position).
 
 ## 4) What the Agent Should Write (Response Rules)
 
@@ -116,9 +146,9 @@ If the project is audiobook-first:
 - Never execute destructive actions (mass rewrites, renames, deletions) unless explicitly instructed.
 - Never introduce secrets, tokens, private keys, or credentials.
 - If you detect secrets in the file, stop and ask the human to redact them.
+- If the file cannot be parsed safely (e.g., malformed thread blocks), do not attempt partial edits; ask the human to fix the file or point you at a known-good file.
 
 ## 6) Compatibility Notes
 
 - This ruleset assumes a UI exists for humans, but the agent itself only reads/writes Markdown.
 - If the project uses additional docs/specs, this file should be treated as the **behavioral contract** for agent runs.
-

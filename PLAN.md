@@ -171,6 +171,7 @@
 - 2026-01-17: Milestone 6 acceptance checks validated in Extension Host.
 - 2026-01-18: Added `README.md` and `.gitignore` for basic repo hygiene and local dev instructions.
 - 2026-01-18: Added `templates/COLLAB-RULES.md` and `templates/AGENTS_addendum.md` templates for Codex read/respond rules.
+- 2026-01-18: Locked `ref=prev=N` “Markdown block” definition and added a Quick Start + scope/ordering rules to the templates.
 - 2026-01-17: Milestone 1 parser/serializer validated via UI flows; blocker closed.
 - 2026-01-17: Added UI actions for creating new threads and appending reply drafts.
 - 2026-01-17: Normalized new-thread insertion spacing to a single blank line between blocks (avoids extra EOF blank lines).
