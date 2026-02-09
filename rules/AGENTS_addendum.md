@@ -1,12 +1,12 @@
-# AGENTS.md Addendum — Codex Collab (MUST READ)
+# AGENTS.md Addendum — codex-collab (MUST READ)
 
 Paste this at the **end** of your existing `AGENTS.md`.
 
 If you don’t have an `AGENTS.md` yet, you can use this file as a minimal standalone `AGENTS.md`.
 
-## Codex Collab workflow
+## codex-collab workflow
 
-Codex Collab is a **file-backed collaboration tool**: it embeds “mini chat sessions” as `CMT:THREAD` blocks inside Markdown files.
+codex-collab is a **file-backed collaboration tool**: it embeds “mini chat sessions” as `CMT:THREAD` blocks inside Markdown files.
 
 - The human uses the VS Code UI to read/write messages.
 - The agent (Codex) responds by **editing the Markdown file directly**.
@@ -27,4 +27,4 @@ If there’s a conflict between these collab rules and other generic agent instr
 
 Even if there are multiple threads, drive Codex with a single instruction, e.g.:
 
-> “Check `my-file.md` for pending Codex Collab threads and respond to each one.”
+> “Check `my-file.md` for pending codex-collab threads and respond to each one.”

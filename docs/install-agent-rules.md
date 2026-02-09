@@ -1,7 +1,7 @@
-# Installing the Codex Collab agent rules into your project
+# Installing the codex-collab agent rules into your project
 
-Codex Collab (the VS Code extension) stores conversations in your Markdown files.
-To make an agent (especially **OpenAI Codex**) reliably read/respond to those threads, you should add the Codex Collab rules to your project.
+codex-collab (the VS Code extension) stores conversations in your Markdown files.
+To make an agent (especially **OpenAI Codex**) reliably read/respond to those threads, you should add the codex-collab rules to your project.
 
 This repo provides two files:
 
