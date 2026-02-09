@@ -7,17 +7,13 @@ tests/**
 docs/**
 templates/**
 rules/**
-
-# keep the smaller (1600px wide) screenshot for Marketplace README usage
-imgs/01-threads-view.png
+archive/**
 
 **/*.ts
 **/*.tsbuildinfo
 
 node_modules/**
 
-PLAN.md
-PROMPT-HELPER.md
 AGENTS.md
 
 tsconfig.json
