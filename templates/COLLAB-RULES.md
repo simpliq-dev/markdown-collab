@@ -1,12 +1,12 @@
 # COLLAB-RULES.md (Template)
 
-This file defines the **Codex Collab** read/respond rules for a *file-backed* collaboration workflow where conversations live inside Markdown files as HTML comment blocks.
+This file defines the **codex-collab** read/respond rules for a *file-backed* collaboration workflow where conversations live inside Markdown files as HTML comment blocks.
 
 This is intended to be **referenced from `AGENTS.md`** so that “how the agent should behave” lives in one place.
 
 ## Quick Start (What This Tool Is / What You Do)
 
-Codex Collab treats each `CMT:THREAD` block as a **mini chat session embedded in Markdown**.
+codex-collab treats each `CMT:THREAD` block as a **mini chat session embedded in Markdown**.
 
 When asked to “run Codex” / “respond” / “process threads”, do this:
 

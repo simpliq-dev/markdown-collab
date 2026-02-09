@@ -23,7 +23,7 @@ The key idea is simple:
 
 VS Code Marketplace:
 - Publisher page: https://marketplace.visualstudio.com/publishers/simpliq
-- In VS Code: Extensions → search **Codex Collab** → Install
+- In VS Code: Extensions → search **codex-collab** → Install
 
 ## Quick start
 
@@ -45,7 +45,7 @@ To make Codex reliably read/respond to the threaded conversations, copy the agen
 
 Important limitation: while the UI supports multiple threads, you typically still drive Codex with a **single serial prompt**, e.g.:
 
-> “Open `my-file.md`. Respond to each pending Codex Collab thread (status=open, last role=H) by appending one role=A message per thread.”
+> “Open `my-file.md`. Respond to each pending codex-collab thread (status=open, last role=H) by appending one role=A message per thread.”
 
 ## Thread block format (MVP)
 
@@ -72,7 +72,7 @@ Notes:
 
 ## Privacy
 
-Codex Collab does not send telemetry and does not contact external services.
+codex-collab does not send telemetry and does not contact external services.
 See: [PRIVACY.md](./PRIVACY.md)
 
 ## Develop / run locally

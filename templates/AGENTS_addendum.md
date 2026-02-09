@@ -1,9 +1,9 @@
-# AGENTS.md Addendum — Codex Collab Read/Respond Rules
+# AGENTS.md Addendum — codex-collab Read/Respond Rules
 
 This is an **addendum** intended to be pasted at the end of an existing `AGENTS.md`.
 It is designed to stand alone even if the surrounding `AGENTS.md` is generic.
 
-Codex Collab is a **file-backed collaboration tool**: it embeds “mini chat sessions” as `CMT:THREAD` blocks inside Markdown files. The human uses a UI to author messages; the agent reads/writes the Markdown file directly.
+codex-collab is a **file-backed collaboration tool**: it embeds “mini chat sessions” as `CMT:THREAD` blocks inside Markdown files. The human uses a UI to author messages; the agent reads/writes the Markdown file directly.
 
 ## Collab Rules (Read This)
 

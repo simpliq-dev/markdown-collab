@@ -1,11 +1,11 @@
-# Codex Collab — VS Code Marketplace Listing Copy (draft)
+# codex-collab — VS Code Marketplace Listing Copy (draft)
 
 Use/adjust any of the following for the Marketplace listing + GitHub README.
 
 ---
 
 ## Extension name (Marketplace)
-**Codex Collab**
+**codex-collab**
 
 ## Subtitle / short tagline (1-liner)
 **File-backed threaded chat for Markdown.**
@@ -25,7 +25,7 @@ Pick one:
 ## Marketplace “Overview” (README top section)
 
 ### What it is
-Codex Collab adds **file-backed threads** to Markdown in VS Code.
+codex-collab adds **file-backed threads** to Markdown in VS Code.
 Start a thread on any paragraph and keep a small conversation in a sidebar—while the thread data stays **inside your Markdown file** as HTML comment blocks.
 
 ### Why this exists
@@ -58,7 +58,7 @@ Recommended prompt pattern:
 
 ### Install the agent rules into your repo
 
-Codex Collab works best when your repo includes a small set of rules that teach Codex how to read/respond to the thread blocks.
+codex-collab works best when your repo includes a small set of rules that teach Codex how to read/respond to the thread blocks.
 
 Copy these files into your project:
 - `rules/COLLAB-RULES.md`

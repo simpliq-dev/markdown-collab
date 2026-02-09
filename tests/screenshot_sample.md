@@ -1,6 +1,6 @@
-# Codex Collab — Screenshot Sample
+# codex-collab — Screenshot Sample
 
-This file is designed to generate **multiple threads** in the Codex Collab sidebar for screenshots.
+This file is designed to generate **multiple threads** in the codex-collab sidebar for screenshots.
 
 Open this file in VS Code, then go to **Explorer → Threads**.
 
@@ -20,7 +20,7 @@ Keep it to 2–3 sentences.
 <!-- CMT:MSG id=7F2KQ role=A ts=2026-02-08T21:12:30.000Z
 Sure. Here’s a tighter version:
 
-“Codex Collab adds file-backed threads to Markdown. Start a thread on any paragraph and keep a small conversation next to your document while the content stays in the file.”
+“codex-collab adds file-backed threads to Markdown. Start a thread on any paragraph and keep a small conversation next to your document while the content stays in the file.”
 
 If you want it even more plain: “It’s a sidebar view for comment threads stored as HTML comments in Markdown.”
 -->
@@ -74,7 +74,7 @@ Maybe something that reads like “Comments”, but doesn’t imply GitHub.
 
 ```ts
 // This code block is only here to make the document feel “real”.
-// Codex Collab threads should still work fine around fenced blocks.
+// codex-collab threads should still work fine around fenced blocks.
 export function add(a: number, b: number) {
   return a + b;
 }

@@ -1,6 +1,6 @@
-# COLLAB-RULES.md — Codex Collab agent rules (normative)
+# COLLAB-RULES.md — codex-collab agent rules (normative)
 
-This file defines the **Codex Collab** read/respond rules for a *file-backed* collaboration workflow where conversations live **inside Markdown files** as HTML comment blocks.
+This file defines the **codex-collab** read/respond rules for a *file-backed* collaboration workflow where conversations live **inside Markdown files** as HTML comment blocks.
 
 Primary target: **OpenAI Codex** (because this is a VS Code extension called `codex-collab`).
 
@@ -8,7 +8,7 @@ It will also work with other agentic systems **as long as they can read and writ
 
 ## Quick start (what to do when asked to “run Codex”)
 
-Codex Collab treats each `CMT:THREAD` block as a **mini chat session embedded in Markdown**.
+codex-collab treats each `CMT:THREAD` block as a **mini chat session embedded in Markdown**.
 
 When a human says something like:
 - “Run Codex” / “respond to threads” / “process pending threads”
