@@ -2,7 +2,7 @@
   "name": "codex-collab",
   "displayName": "codex-collab",
   "description": "In-file threaded chat for Markdown.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "simpliq",
   "author": "Simpliq",
   "license": "MIT",
