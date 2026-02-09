@@ -98,6 +98,17 @@ Links:
 3) Pending thread example (last message = Human)
 4) Re-anchor banner + the thread moved under a new paragraph
 
+### How screenshots appear on the Marketplace page
+
+VS Code Marketplace renders your extension page from your packaged `README.md`.
+So to show screenshots, add them as Markdown images in `README.md`, for example:
+
+```md
+## Screenshots
+
+![Threads view](imgs/01-threads-view_1600.png)
+```
+
 ## Suggested animated GIF (10–20s storyboard)
 - Create thread → type message → Submit → show it becomes pending
 - Close thread → it appears in Closed filter
@@ -106,7 +117,7 @@ Links:
 ---
 
 ## Suggested categories / keywords
-- Category: **Productivity** (or keep **Other** if you want to avoid overclaiming)
+- Category: **Other** ("Productivity" is not a valid VS Code Marketplace category)
 - Keywords to mention in README: markdown, threads, comments, sidebar, collaboration, file-backed
 
 ---

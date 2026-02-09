@@ -32,6 +32,12 @@ VS Code Marketplace:
 3) Place your cursor in a paragraph and create a thread.
 4) Write messages in the thread; they’re stored directly in the file.
 
+## Screenshots
+
+### Threads view
+
+![Threads view](imgs/01-threads-view_1600.png)
+
 ## Use with Codex (recommended)
 
 This extension is designed primarily for **OpenAI Codex** (and also works with other agentic systems that can read/write files).
