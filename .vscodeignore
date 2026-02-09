@@ -8,6 +8,9 @@ docs/**
 templates/**
 rules/**
 
+# keep the smaller (1600px wide) screenshot for Marketplace README usage
+imgs/01-threads-view.png
+
 **/*.ts
 **/*.tsbuildinfo
 
