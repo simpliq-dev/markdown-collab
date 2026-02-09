@@ -7,6 +7,8 @@ The key idea is simple:
 - The “agent” (Codex) **edits the Markdown file directly** by reading/writing thread blocks.
 - No external services and no API calls: the UI is a view over what’s already in the file.
 
+![Threads view](imgs/01-threads-view_1600.png)
+
 ## Features (current)
 
 - Explorer sidebar **Threads** view for the active Markdown file
@@ -31,12 +33,6 @@ VS Code Marketplace:
 2) Open the **Explorer → Threads** view.
 3) Place your cursor in a paragraph and create a thread.
 4) Write messages in the thread; they’re stored directly in the file.
-
-## Screenshots
-
-### Threads view
-
-![Threads view](imgs/01-threads-view_1600.png)
 
 ## Use with Codex (recommended)
 
