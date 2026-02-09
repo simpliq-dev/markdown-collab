@@ -1,3 +1,5 @@
+# codex-collab — Sample collaboration
+
 We started by turning the initial ideation into concrete product rules and a working plan. The core idea was locked: threads live inside Markdown, the extension is just a UI over the file, and Codex edits the file directly.
 
 <!-- CMT:THREAD id=K7Q9M status=closed ref=prev=1-->
@@ -33,7 +35,7 @@ Maybe add a note about why validation is deferred until UI exists.
 I added a note about preventing syntax errors.
 -->
 <!-- CMT:MSG id=M3T9X role=D ts=2026-01-18T16:59:33.656Z
-updated2
+Draft follow up...
 -->
 <!-- /CMT:THREAD id=M3T9X -->
 
