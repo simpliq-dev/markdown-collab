@@ -1,4 +1,4 @@
-# Codex Collab
+# codex-collab
 
 File-backed, in-document threaded chat for Markdown, implemented as a VS Code extension.
 
