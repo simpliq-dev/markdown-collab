@@ -6,6 +6,7 @@ src/**
 tests/**
 docs/**
 templates/**
+rules/**
 
 **/*.ts
 **/*.tsbuildinfo

@@ -30,7 +30,12 @@ Start a thread on any paragraph and keep a small conversation in a sidebar—whi
 
 ### Why this exists
 Sometimes you want a lightweight “conversation next to the text” without introducing a separate service, database, or review tool.
-This is especially handy when collaborating with an AI assistant that edits Markdown: the assistant can read/write the thread blocks directly.
+
+This is especially handy when collaborating with **OpenAI Codex**:
+- the human uses the VS Code UI
+- Codex reads/writes the thread blocks directly by editing the Markdown file
+
+(It can also work with other agentic systems that can read/write files.)
 
 ### Key properties
 - **No external services**: threads are stored in the file; the extension makes no network calls.
@@ -40,6 +45,30 @@ This is especially handy when collaborating with an AI assistant that edits Mark
   - “Pending” is inferred when the last message role is `H`.
 
 > Disclaimer: This project is not affiliated with VS Code, GitHub, OpenAI, or “Codex”.
+
+---
+
+## Using with Codex (required for best results)
+
+The extension supports multiple concurrent threads, but you typically still drive Codex with a **single serial prompt**.
+
+Recommended prompt pattern:
+
+> “Open `<path/to/file.md>`. For each `CMT:THREAD` where `status=open` and the last `CMT:MSG` has `role=H`, append one new `CMT:MSG` with `role=A` answering the human. Do not modify other content.”
+
+### Install the agent rules into your repo
+
+Codex Collab works best when your repo includes a small set of rules that teach Codex how to read/respond to the thread blocks.
+
+Copy these files into your project:
+- `rules/COLLAB-RULES.md`
+- `rules/AGENTS_addendum.md` (append into your existing `AGENTS.md`)
+
+Links:
+- Install guide: https://github.com/simpliq-dev/codex-collab/blob/main/docs/install-agent-rules.md
+- Rules:
+  - https://github.com/simpliq-dev/codex-collab/blob/main/rules/COLLAB-RULES.md
+  - https://github.com/simpliq-dev/codex-collab/blob/main/rules/AGENTS_addendum.md
 
 ---
 
