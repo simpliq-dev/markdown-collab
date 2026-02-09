@@ -19,18 +19,18 @@ Next, we settled the thread grammar, reference rules, and status model. That gav
 
 <!-- CMT:THREAD id=96EFD status=open ref=prev=1-->
 <!-- CMT:MSG id=96EFD role=D ts=2026-01-18T15:30:54.892Z
-test thread1
+test thread - still in draft mode
 -->
 <!-- /CMT:THREAD id=96EFD -->
 
-With those decisions in place, we built the parser/serializer pair and agreed to validate them once a UI is available. The parser now finds threads, reads messages, and flags issues without changing the file.
+With those decisions in place, we built the parser/serializer pair and agreed to validate them once a UI is available (to avoid syntax errors creeping in from manual edits). The parser now finds threads, reads messages, and flags issues without changing the file.
 
 <!-- CMT:THREAD id=M3T9X status=open ref=prev=2-->
 <!-- CMT:MSG id=M3T9X role=H ts=2026-01-18T14:51:39.366Z
 Maybe add a note about why validation is deferred until UI exists.
 -->
 <!-- CMT:MSG id=M3T9X role=A ts=2026-01-18T15:32:16.323Z
-Maybe add a note about why validation is deferred until UI exists. 2
+I added a note about preventing syntax errors.
 -->
 <!-- CMT:MSG id=M3T9X role=D ts=2026-01-18T16:59:33.656Z
 updated2
@@ -45,6 +45,6 @@ Test 2
 -->
 <!-- /CMT:THREAD id=58M96 -->
 
-Finally, we addressed local install issues on SMB by disabling bin links and wiring build scripts to call TypeScript directly. That keeps the setup lightweight while we iterate.
+Finally, we packaged it up and made ready to share on MS Marketplace.
 
 
