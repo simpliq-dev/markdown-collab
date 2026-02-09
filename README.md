@@ -21,10 +21,9 @@ The key idea is simple:
 
 ## Install
 
-Once published on the VS Code Marketplace:
-- Open VS Code → Extensions
-- Search for **Codex Collab**
-- Install
+VS Code Marketplace:
+- Publisher page: https://marketplace.visualstudio.com/publishers/simpliq
+- In VS Code: Extensions → search **Codex Collab** → Install
 
 ## Quick start
 
@@ -32,6 +31,21 @@ Once published on the VS Code Marketplace:
 2) Open the **Explorer → Threads** view.
 3) Place your cursor in a paragraph and create a thread.
 4) Write messages in the thread; they’re stored directly in the file.
+
+## Use with Codex (recommended)
+
+This extension is designed primarily for **OpenAI Codex** (and also works with other agentic systems that can read/write files).
+
+To make Codex reliably read/respond to the threaded conversations, copy the agent rules into your repo:
+
+- Install guide: [`docs/install-agent-rules.md`](./docs/install-agent-rules.md)
+- Rules:
+  - [`rules/COLLAB-RULES.md`](./rules/COLLAB-RULES.md)
+  - [`rules/AGENTS_addendum.md`](./rules/AGENTS_addendum.md)
+
+Important limitation: while the UI supports multiple threads, you typically still drive Codex with a **single serial prompt**, e.g.:
+
+> “Open `my-file.md`. Respond to each pending Codex Collab thread (status=open, last role=H) by appending one role=A message per thread.”
 
 ## Thread block format (MVP)
 
