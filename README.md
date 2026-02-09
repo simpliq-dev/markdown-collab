@@ -19,6 +19,20 @@ The key idea is simple:
 - Jump-to-anchor and re-anchor
 - Filters: status (All/Open/Pending/Closed) and stage (All/Draft/Human/Agent) based on the **last** message role
 
+## Install
+
+Once published on the VS Code Marketplace:
+- Open VS Code → Extensions
+- Search for **Codex Collab**
+- Install
+
+## Quick start
+
+1) Open any Markdown file (`.md`).
+2) Open the **Explorer → Threads** view.
+3) Place your cursor in a paragraph and create a thread.
+4) Write messages in the thread; they’re stored directly in the file.
+
 ## Thread block format (MVP)
 
 Threads are represented as HTML comment blocks inside Markdown.
@@ -41,6 +55,11 @@ Notes:
 - “Pending” is inferred (last message role is `H`).
 - Message bodies escape `<!--` and `-->` to keep the comment structure valid.
 - `ref=prev=N` anchors a thread to the prior N Markdown blocks (default `prev=1` if missing). `ref=file` targets the whole file.
+
+## Privacy
+
+Codex Collab does not send telemetry and does not contact external services.
+See: [PRIVACY.md](./PRIVACY.md)
 
 ## Develop / run locally
 
@@ -69,6 +88,10 @@ Run in the Extension Development Host:
 
 If you’re working on an SMB share that doesn’t support symlinks, npm may fail when creating `node_modules/.bin/*`.
 This repo includes `.npmrc` with `bin-links=false` to avoid those symlinks.
+
+## Publishing
+
+See: [`docs/publish.md`](./docs/publish.md)
 
 ## Repo layout
 
