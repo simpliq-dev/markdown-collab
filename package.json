@@ -69,7 +69,7 @@
     "build": "node ./node_modules/typescript/bin/tsc -p .",
     "watch": "node ./node_modules/typescript/bin/tsc -w -p .",
     "vscode:prepublish": "npm run build",
-    "package": "node ./node_modules/@vscode/vsce/vsce package",
+    "package": "node ./node_modules/@vscode/vsce/vsce package --no-rewrite-relative-links",
     "publish": "node ./node_modules/@vscode/vsce/vsce publish"
   },
   "devDependencies": {
