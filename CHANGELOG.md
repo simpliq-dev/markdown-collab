@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Replaced the Explorer card list and separate conversation panel with an opt-in Collaborative Review custom editor.
+- Rendered Markdown and contextual thread markers as one document surface, with a focused conversation rail and all-thread activity view.
+- Preserved independent composer state across multiple conversations and kept draft/save distinct from explicit submission.
+
+### Security
+
+- Added safe Markdown rendering, strict Webview resource policy, stale-document mutation guards, and review-model regression coverage.
+
 ## [0.0.1] - 2026-02-05
 
 ### Added

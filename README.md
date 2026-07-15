@@ -1,118 +1,92 @@
 # codex-collab
 
-File-backed, in-document threaded chat for Markdown, implemented as a VS Code extension.
+Document-first threaded conversations stored inside Markdown.
 
-The key idea is simple:
-- Humans use the **Threads** sidebar UI to read and author messages.
-- The “agent” (Codex) **edits the Markdown file directly** by reading/writing thread blocks.
-- No external services and no API calls: the UI is a view over what’s already in the file.
+codex-collab adds an opt-in **Collaborative Review** editor to VS Code. It renders the Markdown as a readable document, places conversation markers beside anchored content, and keeps complete multi-turn discussions in a contextual rail. The prose and submitted conversation state remain in one portable `.md` file.
 
-![Threads view](imgs/01-threads-view_1600.png)
+## Why it exists
 
-## Features (current)
+Long-form human-agent work rarely fits a single serial prompt. codex-collab lets you keep several discussions active around one document, revisit unfinished prompts, and decide exactly when each turn becomes actionable to the agent.
 
-- Explorer sidebar **Threads** view for the active Markdown file
-- Create a new thread at the current paragraph
-- Expand/collapse threads (including Expand all / Collapse all)
-- Full message history rendering (chat-like layout)
-- Draft + submit flow (drafts are editable; submit creates the “human” message)
-- Pending inference (when last role is `H`)
-- Close / re-open thread (`status=open|closed`)
-- Jump-to-anchor and re-anchor
-- Filters: status (All/Open/Pending/Closed) and stage (All/Draft/Human/Agent) based on the **last** message role
+- No hosted conversation service or separate thread database
+- No LLM API calls from the extension
+- No WYSIWYG conversion or proprietary document format
+- No implicit submission when you switch focus
 
-## Install
+## Development experience
 
-VS Code Marketplace:
-- Publisher page: https://marketplace.visualstudio.com/publishers/simpliq
-- In VS Code: Extensions → search **codex-collab** → Install
+The current repository build is undergoing a substantial Collaborative Review redesign. The existing parser and file format remain backward compatible; the new review surface has not yet been released to the Marketplace.
 
-## Quick start
+1. Open a Markdown file in VS Code.
+2. Use the comment-discussion icon in the editor title, right-click and choose **Codex Collab: Open Collaborative Review**, or run that command from the Command Palette.
+3. Hover a rendered block and use **+** to start a conversation.
+4. Move between thread markers or **All conversations**. Each thread retains its own unfinished composer.
+5. Use **Save draft** to persist a non-actionable `D` turn in the Markdown file, or **Submit turn** / `Ctrl+Enter` to create an actionable human `H` turn.
+6. Use **Open source** whenever you want the native Markdown editor beside the review surface.
 
-1) Open any Markdown file (`.md`).
-2) Open the **Explorer → Threads** view.
-3) Place your cursor in a paragraph and create a thread.
-4) Write messages in the thread; they’re stored directly in the file.
+When the latest submitted turn is human-authored, that conversation shows **Waiting** until an agent appends an `A` response to the file. Other threads remain independently editable.
 
-## Use with Codex (recommended)
+## Thread format
 
-This extension is designed primarily for **OpenAI Codex** (and also works with other agentic systems that can read/write files).
-
-To make Codex reliably read/respond to the threaded conversations, copy the agent rules into your repo:
-
-- Install guide: [`docs/install-agent-rules.md`](./docs/install-agent-rules.md)
-- Rules:
-  - [`rules/COLLAB-RULES.md`](./rules/COLLAB-RULES.md)
-  - [`rules/AGENTS_addendum.md`](./rules/AGENTS_addendum.md)
-
-Important limitation: while the UI supports multiple threads, you typically still drive Codex with a **single serial prompt**, e.g.:
-
-> “Open `my-file.md`. Respond to each pending codex-collab thread (status=open, last role=H) by appending one role=A message per thread.”
-
-## Thread block format (MVP)
-
-Threads are represented as HTML comment blocks inside Markdown.
-
-Example (simplified):
+Threads are HTML comments, so normal rendered Markdown hides the storage layer:
 
 ```md
 <!-- CMT:THREAD id=ABCDE status=open ref=prev=1 -->
 <!-- CMT:MSG id=ABCDE role=H ts=2026-01-18T12:00:00.000Z
-Hello from the human.
+Please pressure-test this claim.
 -->
 <!-- CMT:MSG id=ABCDE role=A ts=2026-01-18T12:01:00.000Z
-Hello from the agent.
+The claim needs a narrower scope and a supporting source.
 -->
 <!-- /CMT:THREAD id=ABCDE -->
 ```
 
-Notes:
-- `status` is **human-owned** and only `open|closed`.
-- “Pending” is inferred (last message role is `H`).
-- Message bodies escape `<!--` and `-->` to keep the comment structure valid.
-- `ref=prev=N` anchors a thread to the prior N Markdown blocks (default `prev=1` if missing). `ref=file` targets the whole file.
+- `status` is `open|closed` and remains human-controlled.
+- `role=D` is a saved draft, `role=H` is a submitted human turn, and `role=A` is an agent response.
+- Waiting is inferred when the last message is `H`.
+- `ref=prev=N` anchors a thread to preceding Markdown blocks; `ref=file` targets the whole document.
+- Comment delimiters in message bodies are escaped to protect the file grammar.
 
-## Privacy
+## Use with an agent
 
-codex-collab does not send telemetry and does not contact external services.
-See: [PRIVACY.md](./PRIVACY.md)
+The extension is agent-neutral. Any agent that can read and edit files can respond by appending one valid `role=A` message to each open thread whose latest message is `role=H`.
 
-## Develop / run locally
+Repository guidance is available in:
 
-Prereqs:
-- VS Code
-- Node.js + npm
+- [Install agent rules](docs/install-agent-rules.md)
+- [Collaboration rules](rules/COLLAB-RULES.md)
+- [AGENTS.md addendum](rules/AGENTS_addendum.md)
 
-Install deps:
+## Develop locally
+
+Prerequisites: VS Code, Node.js, and npm.
 
 ```sh
 npm install
+npm test
 ```
 
-Build:
+Open the repository itself in the VS Code desktop application (not the Codex app), then press `F5`. VS Code launches a separate window titled **Extension Development Host** with the development build loaded. In that new window, open `tests/review_showcase.md` and run **Codex Collab: Open Collaborative Review** from the Command Palette or the comment-discussion icon in the editor title.
+
+Additional commands:
 
 ```sh
 npm run build
+npm run watch
+npm run package
 ```
 
-Run in the Extension Development Host:
-- Open this repo in VS Code
-- Press `F5` (Run → Start Debugging)
-- In the new VS Code window, open any `.md` file and check **Explorer → Threads**
+The repository uses `.npmrc` with `bin-links=false` so dependency installation also works on SMB shares that do not support symlinks.
 
-### SMB shares / symlink errors
+## Privacy and security
 
-If you’re working on an SMB share that doesn’t support symlinks, npm may fail when creating `node_modules/.bin/*`.
-This repo includes `.npmrc` with `bin-links=false` to avoid those symlinks.
+codex-collab does not send telemetry or contact an external service. Collaborative Review treats workspace text as untrusted: raw HTML is not rendered, remote images are not loaded automatically, external links require an explicit click, and the Webview uses a restrictive content security policy. See [PRIVACY.md](PRIVACY.md).
 
-## Publishing
+## Project state
 
-See: [`docs/publish.md`](./docs/publish.md)
+- [Current intent and experience contract](docs/PROJECT.md)
+- [Consequential decisions](docs/DECISIONS.md)
+- [Active reset plan](docs/plans/active/collaborative-review-reset.md)
+- [Archived design material](docs/archive/README.md)
 
-## Repo layout
-
-- `src/extension.ts`: VS Code extension + webview UI
-- `src/core/`: parser/serializer for thread blocks
-- `tests/`: manual Markdown samples for exercising the UI
-- `docs/`: PRFAQ/PRD and ideation transcript
-
+Core parsing, serialization, mutations, and anchor resolution live in `src/core/`. The custom editor host and review model live in `src/review/`; packaged Webview assets live in `media/`.
