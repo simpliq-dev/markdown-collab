@@ -1,0 +1,4 @@
+interface:
+  display_name: "Round Up Project"
+  short_description: "Promote proven project lessons safely"
+  default_prompt: "Use $round-up-project to review this project's enduring lessons and prepare human-reviewed template improvements."

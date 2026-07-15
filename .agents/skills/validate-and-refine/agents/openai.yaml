@@ -1,0 +1,4 @@
+interface:
+  display_name: "Validate and Refine"
+  short_description: "Run evidence-led validation and refinement loops"
+  default_prompt: "Use $validate-and-refine to test the current behavior, identify the largest gap, and improve it with evidence."

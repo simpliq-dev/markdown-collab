@@ -1,0 +1,4 @@
+interface:
+  display_name: "Capture Enduring Learning"
+  short_description: "Record reusable lessons as project evidence"
+  default_prompt: "Use $capture-enduring-learning to record this demonstrated project lesson for later cross-project review."

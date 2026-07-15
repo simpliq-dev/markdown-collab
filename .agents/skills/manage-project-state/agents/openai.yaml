@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project State"
+  short_description: "Create only the project state artifacts now justified"
+  default_prompt: "Use $manage-project-state to assess whether this project needs durable documentation or a resumable handoff."

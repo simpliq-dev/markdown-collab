@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evolve Framework"
+  short_description: "Turn repeated friction into reusable capability"
+  default_prompt: "Use $evolve-framework to assess repeated workflow friction and propose the smallest useful framework improvement."

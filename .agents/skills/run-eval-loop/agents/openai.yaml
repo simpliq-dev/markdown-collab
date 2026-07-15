@@ -1,0 +1,4 @@
+interface:
+  display_name: "Run Eval Loop"
+  short_description: "Optimize a measurable result with a bounded loop"
+  default_prompt: "Use $run-eval-loop to establish a baseline and run a bounded keep-or-discard improvement loop."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Exploration"
+  short_description: "Explore intent, users, risks, and useful prototypes"
+  default_prompt: "Use $explore-project to guide this new project from an initial idea toward shared understanding and a useful first experiment."
