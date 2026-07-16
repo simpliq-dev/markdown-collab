@@ -54,14 +54,16 @@ jobs:
           fi
 
           TITLE="Markdown Collab ${VERSION}"
-          NOTES="Install the VSIX directly, or download the complete test kit for the VSIX, standalone AGENTS.md and CLAUDE.md guidance, installation README, and checksum."
+          NOTES="Install the VSIX directly, or download the complete test kit. Standalone AGENTS.md and CLAUDE.md guidance files are also attached for quick project setup."
           VSIX="release/${KIT}/markdown-collab-${VERSION}.vsix"
           ARCHIVE="release/${KIT}.tar.gz"
+          AGENTS="release/${KIT}/AGENTS.md"
+          CLAUDE="release/${KIT}/CLAUDE.md"
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" "$VSIX" "$ARCHIVE" --clobber
+            gh release upload "$TAG" "$VSIX" "$ARCHIVE" "$AGENTS" "$CLAUDE" --clobber
           else
-            gh release create "$TAG" "$VSIX" "$ARCHIVE" \
+            gh release create "$TAG" "$VSIX" "$ARCHIVE" "$AGENTS" "$CLAUDE" \
               --verify-tag \
               --title "$TITLE" \
               --notes "$NOTES" \

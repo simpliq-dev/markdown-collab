@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Added per-conversation and document-wide conversation deletion, each protected by an explicit confirmation warning.
 - Reworked the repository README around installation, daily use, the current review UI, privacy, and direct GitHub Release distribution.
 - Changed complete release-kit archives from ZIP to `.tar.gz` while retaining a separately downloadable VSIX.
+- Added standalone `AGENTS.md` and `CLAUDE.md` files as GitHub Release assets for quick agent setup.
 
 ### Security
 
