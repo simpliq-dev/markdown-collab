@@ -4,11 +4,11 @@
 
 # Markdown Collab
 
-A single agent chat is fine until a document review becomes complicated. Questions lose their connection to the text, unfinished thoughts compete for attention, and sending one comment can interrupt another.
+Markdown Collab is a VS Code-compatible extension that helps you collaborate on document writing with an LLM in much the same way you would with a colleague in Quip or SharePoint.
 
-Markdown Collab gives each selected part of a Markdown document its own conversation and unfinished draft. When several comments are ready, it creates one short prompt that you copy into your existing agent chat. The extension does not send the prompt or connect to a model.
+Open a threaded conversation beside any passage, keep several discussions moving at once, and choose when to send a group of comments to your existing Codex, Claude, or other agent chat. The LLM can consider the comments together, edit the document, and respond in each thread without losing the wider context.
 
-The experience is closer to Quip or SharePoint comments, but the document remains a normal Markdown file, with review conversations stored as hidden HTML comments alongside its content. There is no hosted discussion service or separate thread database.
+The document stays at the centre of the work. Its conversations are stored as hidden HTML comments inside the Markdown file, so the writing, questions, decisions, and responses travel together. There is no hosted discussion service or separate thread database. Markdown Collab prepares the handoff, but it never sends a prompt or connects to a model.
 
 Built by [Simpliq](https://simpliq.io).
 
@@ -20,14 +20,14 @@ Built by [Simpliq](https://simpliq.io).
 
 [Download the latest VSIX and `.tar.gz` release kit from GitHub Releases.](https://github.com/simpliq-dev/markdown-collab/releases/latest) The release kit also contains the agent guidance and a checksum.
 
-## The basic idea
+## Work through the document together
 
-- Comments are full conversations, not disposable notes.
-- Every thread keeps its own unfinished composer in the review view. Changing focus never submits anything.
-- **Save draft** writes a non-actionable draft into the Markdown file. **Submit turn** writes a human turn that is ready for the agent.
-- **N comments ready** shows how much work is queued. **Copy prompt** gives you one short handoff for the existing agent chat.
-- Conversations remain in the Markdown file as hidden HTML comments, so the document and its review history travel together.
-- Threads can be resolved, reopened, moved, or deleted. Destructive actions ask for confirmation.
+- Discuss the exact passage that needs attention instead of describing its location in chat.
+- Keep several lines of thought open at once without losing the draft or history in any thread.
+- Submit a group of ready comments in one turn, giving the LLM the context to make related edits together.
+- Bring responses back into the relevant threads so the reasoning stays attached to the document.
+- Carry the document and its review history together as one portable, version-controllable Markdown file.
+- Stay in control of what is ready, what is sent, and when a conversation is resolved or removed.
 
 ## Quick start
 
