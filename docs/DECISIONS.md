@@ -66,8 +66,8 @@
 
 **Why:** The VSIX remains convenient for installation, while `.tar.gz` is a familiar, portable release format for a developer-oriented audience. Generated binaries stay out of repository history and every published asset is built from the tagged source by CI.
 
-## 2026-07-16 - Protect main with admin-only, validated pull-request merges
+## 2026-07-16 - Protect main with validated pull-request merges
 
-**Decision:** Protect `main` so changes arrive through pull requests, the build/test/package check passes, and review conversations are resolved. Only repository administrators may update or merge into `main`; force pushes and branch deletion remain disabled.
+**Decision:** Protect `main` so changes arrive through pull requests, the build/test/package check passes, and review conversations are resolved. Apply the requirements to administrators as well; keep force pushes and branch deletion disabled.
 
-**Why:** Contributors should be able to propose changes without being able to publish them. Requiring the same reproducible validation before every merge protects the directly distributed VSIX while retaining a practical single-maintainer workflow with no mandatory second-person approval.
+**Why:** Requiring the same reproducible validation before every merge protects the directly distributed VSIX while retaining a practical single-maintainer workflow with no mandatory second-person approval. Because the repository is owned by a personal GitHub account, literal admin-only merging also requires every non-admin collaborator to have no more than triage access; GitHub only supports per-user/team protected-branch restrictions for organization repositories.

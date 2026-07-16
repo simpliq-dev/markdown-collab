@@ -2,7 +2,7 @@
 
 ## Main branch policy
 
-All product changes enter `main` through a pull request. The protected branch requires the **Build, test, and package** check and resolved review conversations; only repository administrators can merge. A second-person approval is welcome but not mandatory while the project has a single active maintainer.
+All product changes enter `main` through a pull request. The protected branch requires the **Build, test, and package** check and resolved review conversations, including for administrators. A second-person approval is welcome but not mandatory while the project has a single active maintainer. On this personal-account repository, admin-only merging additionally depends on keeping non-admin collaborators at triage or read access.
 
 ## GitHub Releases
 
