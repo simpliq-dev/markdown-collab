@@ -58,7 +58,7 @@ Acceptance:
 
 ### Slice 3 - Distribution confidence
 
-- [ ] Validate a clean dependency install, build, tests, package contents, and VSIX installation.
+- [x] Validate a clean dependency install, build, tests, package contents, release download, and isolated VSIX installation.
 - [ ] Exercise the main workflow in supported VS Code.
 - [ ] Exercise the same VSIX in current Cursor and record any editor-specific limitations.
 - [ ] Update user documentation and screenshots only after UX acceptance.
@@ -81,6 +81,7 @@ Acceptance:
 - VSIX packaging succeeds and includes the runtime Markdown renderer and packaged Webview assets while excluding `.agents`, tests, source, and archived material.
 - The lockfile passes `npm ci --dry-run`; the `0.0.9` packaged VSIX installs and enumerates as `simpliq.codex-collab` in an isolated VS Code extension directory.
 - `npm run test-kit` produces a portable, checksum-verified folder with the branded VSIX, standalone agent guidance, and installation README. Tagged builds publish the VSIX and complete ZIP through GitHub Releases.
+- The public [`v0.0.9-test.1` prerelease](https://github.com/simpliq-dev/codex-collab/releases/tag/v0.0.9-test.1) passed its clean GitHub Actions build. Both assets were downloaded back from GitHub; the ZIP contents were inspected and the downloaded VSIX installed as `simpliq.codex-collab@0.0.9` in an isolated VS Code profile.
 - Official VS Code documentation supports an opt-in custom text editor over the standard `TextDocument`.
 - Human screenshots and observation rejected the existing sidebar-plus-panel UX.
 - Human testing confirms the reset UI experience is good; the remaining UX uncertainty is the complete clipboard-to-agent response loop.
