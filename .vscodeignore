@@ -16,6 +16,7 @@ archive/**
 imgs/01-threads-view_1600.png
 
 AGENTS.md
+CLAUDE.md
 
 tsconfig.json
 .gitignore

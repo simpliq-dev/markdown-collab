@@ -98,7 +98,7 @@
 
     const counts = create("div", "review-counts");
     counts.append(countPill("Open", model.counts.open, "open"));
-    counts.append(countPill("Waiting", model.counts.waiting, "waiting"));
+    counts.append(renderAgentHandoff());
     counts.append(countPill("Drafts", visibleDraftCount(), "draft"));
     topbar.append(counts);
 
@@ -124,6 +124,32 @@
 
   function countPill(label, count, stage) {
     return create("span", `count count-${stage}`, `${count} ${label}`);
+  }
+
+  function renderAgentHandoff() {
+    const count = model.counts.waiting;
+    const handoff = create("div", "review-handoff");
+    const label = count === 1 ? "1 comment ready" : `${count} comments ready`;
+    handoff.append(
+      create(
+        "span",
+        count > 0 ? "count count-ready has-ready" : "count count-ready",
+        label
+      )
+    );
+    const copy = button("Copy prompt", "copy-prompt", "copy-agent-prompt", {
+      title:
+        count > 0
+          ? "Copy a short prompt for your current agent conversation"
+          : "Submit a comment before preparing an agent prompt",
+      ariaLabel:
+        count > 0
+          ? `Copy prompt for ${label}`
+          : "No comments are ready for an agent prompt",
+    });
+    copy.disabled = count === 0 || model.errors.length > 0;
+    handoff.append(copy);
+    return handoff;
   }
 
   function visibleDraftCount() {
@@ -706,6 +732,10 @@
       vscode.postMessage({ type: "openSource" });
       return;
     }
+    if (action === "copy-agent-prompt") {
+      send("copyAgentPrompt");
+      return;
+    }
     if (action === "dismiss-notice") {
       statusMessage = "";
       render();
@@ -798,6 +828,13 @@
     const message = event.data;
     if (message?.type === "reviewModel" && message.model) {
       updateModel(message.model);
+      return;
+    }
+    if (message?.type === "clipboardResult") {
+      statusMessage = message.ok
+        ? `${message.count} ${message.count === 1 ? "comment" : "comments"} ready prompt copied. Paste it into your current agent conversation.`
+        : message.message || "The agent prompt could not be copied.";
+      render();
       return;
     }
     if (message?.type !== "mutationResult") {

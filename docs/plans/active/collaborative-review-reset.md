@@ -14,6 +14,7 @@ Deliver an opt-in Markdown **Collaborative Review** editor in which rendered pro
 - An all-thread activity view supports document-wide navigation without duplicating the full conversation UI.
 - Source Markdown opens beside review mode without conversion or data loss.
 - External file edits refresh the review surface without losing unrelated local composers.
+- The top bar exposes **N comments ready** and copies one prompt for processing those comments together in the human's existing agent conversation.
 
 ## Implementation slices
 
@@ -46,6 +47,13 @@ Acceptance:
 - [x] The document remains readable at narrow editor widths in the browser interaction harness.
 - [x] Visual hierarchy remains coherent under simulated VS Code light, dark, and high-contrast theme tokens.
 
+### Slice 2.1 - Portable agent handoff
+
+- [x] Count open threads awaiting an agent response as ready comments.
+- [x] Add a host-backed clipboard action with singular/plural prompt text and malformed-document protection.
+- [x] Teach AGENTS.md-aware and Claude agents to process all ready comments as one coherent turn.
+- [x] Keep handoff explicit and portable rather than injecting into a vendor chat surface.
+
 ### Slice 3 - Distribution confidence
 
 - [ ] Validate a clean dependency install, build, tests, package contents, and VSIX installation.
@@ -64,14 +72,15 @@ Acceptance:
 ## Current evidence
 
 - TypeScript build, Webview JavaScript syntax, and whitespace checks pass using the Codex-bundled Node runtime.
-- All 24 core and review-model regression tests pass.
-- A headless rendered-interaction harness confirms five anchored markers, no visible raw IDs, three preserved composers, isolation when another thread is submitted, keyboard thread navigation, re-anchor targeting, narrow-width readability, rail hiding/restoration, visible mutation notices, and disabled mutation controls for malformed data.
+- All 25 core and review-model regression tests pass, including singular/plural agent-prompt generation.
+- A headless rendered-interaction harness confirms the ready label and copy request as well as five anchored markers, no visible raw IDs, three preserved composers, isolation when another thread is submitted, keyboard thread navigation, re-anchor targeting, narrow-width readability, rail hiding/restoration, visible mutation notices, and disabled mutation controls for malformed data.
 - Rendered screenshots were inspected under simulated VS Code light, dark, and high-contrast tokens; the document/rail hierarchy, focused anchor, controls, and conversation history remain legible in each.
 - Production and development dependency audits report zero known vulnerabilities after upgrading the project-local packager and applying non-breaking lockfile fixes.
 - VSIX packaging succeeds and includes the runtime Markdown renderer and packaged Webview assets while excluding `.agents`, tests, source, and archived material.
 - The lockfile passes `npm ci --dry-run`; the packaged VSIX installs and enumerates as `simpliq.codex-collab@0.0.8` in an isolated VS Code extension directory.
 - Official VS Code documentation supports an opt-in custom text editor over the standard `TextDocument`.
 - Human screenshots and observation rejected the existing sidebar-plus-panel UX.
+- Human testing confirms the reset UI experience is good; the remaining UX uncertainty is the complete clipboard-to-agent response loop.
 
 ## Constraints and risks
 
@@ -83,4 +92,4 @@ Acceptance:
 
 ## Resume point
 
-Run the human interaction checkpoint in the real Extension Development Host using `tests/review_showcase.md`. Verify live source/review synchronization, light/dark/high-contrast hierarchy, and the complete create/draft/submit/re-anchor flow. Then exercise the packaged VSIX in Cursor. These checks require the actual editor hosts and remain the boundary before screenshots, release polish, or publication.
+In the real Extension Development Host, use the modified `tests/review_showcase.md` to verify that **Copy prompt** places the expected ready-count sentence on the Windows clipboard, then paste it into the existing agent conversation and verify that all ready comments are handled together with one `role=A` response per thread. Cursor remains a separate later validation target because it is not installed locally.

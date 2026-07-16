@@ -101,6 +101,20 @@ export function buildReviewModel(
   };
 }
 
+export function buildAgentReviewPrompt(model: ReviewModel): string | undefined {
+  const count = model.counts.waiting;
+  if (count === 0 || model.errors.length > 0) {
+    return undefined;
+  }
+  const fileName = model.fileName.replace(/\\/g, "/");
+  const subject = count === 1 ? "1 comment is" : `${count} comments are`;
+  const action =
+    count === 1
+      ? "Process it."
+      : "Process them together as one coherent turn.";
+  return `${subject} ready for review in ${fileName}. ${action}`;
+}
+
 export function renderMarkdown(source: string): string {
   return markdown.render(source.trim());
 }

@@ -7,7 +7,11 @@ import {
   submitHumanMessage,
   toggleStatus,
 } from "../core/mutations";
-import { buildReviewModel, ReviewModel } from "./model";
+import {
+  buildAgentReviewPrompt,
+  buildReviewModel,
+  ReviewModel,
+} from "./model";
 
 type ReviewMessage = {
   type?: unknown;
@@ -102,6 +106,31 @@ export class ReviewEditorProvider implements vscode.CustomTextEditorProvider {
                 "The Markdown changed before this action completed. Review the refreshed conversation and try again.",
             });
             await sendModel();
+            return;
+          }
+
+          if (type === "copyAgentPrompt") {
+            const model = this.modelFor(document);
+            const prompt = buildAgentReviewPrompt(model);
+            if (!prompt) {
+              await panel.webview.postMessage({
+                type: "clipboardResult",
+                requestId,
+                ok: false,
+                message:
+                  model.errors.length > 0
+                    ? "Repair the conversation data before preparing an agent prompt."
+                    : "There are no submitted comments ready for an agent response.",
+              });
+              return;
+            }
+            await vscode.env.clipboard.writeText(prompt);
+            await panel.webview.postMessage({
+              type: "clipboardResult",
+              requestId,
+              ok: true,
+              count: model.counts.waiting,
+            });
             return;
           }
 

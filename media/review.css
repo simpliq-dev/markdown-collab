@@ -92,6 +92,12 @@ textarea:focus-visible,
   flex: 1;
 }
 
+.review-handoff {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .review-topbar-actions {
   justify-content: flex-end;
 }
@@ -144,6 +150,27 @@ button:disabled {
   color: var(--vscode-descriptionForeground);
   font-size: 11px;
   background: transparent;
+}
+
+.count-ready.has-ready {
+  border-color: color-mix(in srgb, var(--vscode-textLink-foreground) 58%, var(--vscode-panel-border));
+  color: var(--vscode-foreground);
+  background: color-mix(in srgb, var(--vscode-textLink-foreground) 10%, transparent);
+}
+
+.copy-prompt {
+  min-height: 25px;
+  border: 1px solid var(--vscode-button-secondaryBackground, var(--vscode-panel-border));
+  border-radius: 999px;
+  padding: 3px 9px;
+  color: var(--vscode-button-secondaryForeground, var(--vscode-foreground));
+  background: var(--vscode-button-secondaryBackground, transparent);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.copy-prompt:hover {
+  background: var(--vscode-button-secondaryHoverBackground, var(--vscode-toolbar-hoverBackground));
 }
 
 .review-errors {
@@ -911,7 +938,9 @@ body.vscode-high-contrast .anchor-context,
 body.vscode-high-contrast .conversation-composer textarea,
 body.vscode-high-contrast .thread-marker,
 body.vscode-high-contrast .start-thread,
-body.vscode-high-contrast .reanchor-target {
+body.vscode-high-contrast .reanchor-target,
+body.vscode-high-contrast .count-ready,
+body.vscode-high-contrast .copy-prompt {
   border-color: var(--vscode-contrastBorder);
 }
 

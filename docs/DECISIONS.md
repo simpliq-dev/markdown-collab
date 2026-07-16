@@ -39,3 +39,11 @@
 **Why:** Cursor is VS Code-based and supports importing extensions, but its upstream cadence and custom-editor behavior can diverge. Recent Cursor reports show custom text editors in use as well as editor-specific conflicts and regressions. Compatibility is probable, not guaranteed.
 
 **Evidence:** [Cursor's VS Code migration documentation](https://docs.cursor.com/get-started/migrate-from-vs-code) and a recent [Cursor custom-editor interaction report](https://forum.cursor.com/t/allow-extensions-to-hide-the-preview-markdown-toggle-for-custom-editors/162724).
+
+## 2026-07-16 - Hand off ready comments through an explicit copied prompt
+
+**Decision:** Count open threads whose latest message is `role=H` as **N comments ready**. Provide a small **Copy prompt** action that names the Markdown file and asks the human's current agent conversation to process those comments together as one coherent turn.
+
+**Why:** Cross-extension composer injection is not a supported, portable contract and would be brittle across Codex, Claude, Cursor, and future agents. Clipboard handoff preserves one continuous chat, keeps the human in control of sending, and leaves the extension agent-neutral.
+
+**Boundary:** Copying never sends a prompt, starts a task, attaches a file, or invokes a model. Repository-level `AGENTS.md` and `CLAUDE.md` explain how an agent should process the submitted comments and append responses.

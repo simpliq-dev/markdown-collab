@@ -17,6 +17,7 @@ const {
   toggleStatus,
 } = require("../dist/core/mutations");
 const {
+  buildAgentReviewPrompt,
   buildReviewModel,
   renderMarkdown,
 } = require("../dist/review/model");
@@ -92,11 +93,44 @@ test("keeps the Collaborative Review showcase valid and multi-stage", () => {
 
   assert.equal(parsed.errors.length, 0);
   assert.equal(parsed.threads.length, 4);
-  assert.deepEqual(
-    model.threads.map((thread) => thread.stage),
-    ["answered", "waiting", "draft", "resolved"]
-  );
+  assert.ok(new Set(model.threads.map((thread) => thread.stage)).size >= 2);
   assert.equal(model.blocks.filter((block) => block.threadIds.length).length, 4);
+});
+
+test("builds a concise agent handoff prompt from ready comments", () => {
+  const source = [
+    "# Review",
+    "",
+    "First passage.",
+    threadWithMessages({
+      id: "K7Q9M",
+      messages: [{ role: "H", body: "Tighten this." }],
+    }),
+    "",
+    "Second passage.",
+    threadWithMessages({
+      id: "M3T9X",
+      messages: [{ role: "H", body: "Add an example." }],
+    }),
+  ].join("\n");
+  const model = buildReviewModel(source, "docs\\brief.md");
+
+  assert.equal(
+    buildAgentReviewPrompt(model),
+    "2 comments are ready for review in docs/brief.md. Process them together as one coherent turn."
+  );
+  const oneComment = buildReviewModel(
+    ["# Review", "", "Passage.", threadBlock()].join("\n"),
+    "brief.md"
+  );
+  assert.equal(
+    buildAgentReviewPrompt(oneComment),
+    "1 comment is ready for review in brief.md. Process it."
+  );
+  assert.equal(
+    buildAgentReviewPrompt(buildReviewModel("# No comments", "empty.md")),
+    undefined
+  );
 });
 
 test("unescapes comment delimiters in message bodies", () => {

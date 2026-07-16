@@ -22,7 +22,8 @@ The current repository build is undergoing a substantial Collaborative Review re
 3. Hover a rendered block and use **+** to start a conversation.
 4. Move between thread markers or **All conversations**. Each thread retains its own unfinished composer.
 5. Use **Save draft** to persist a non-actionable `D` turn in the Markdown file, or **Submit turn** / `Ctrl+Enter` to create an actionable human `H` turn.
-6. Use **Open source** whenever you want the native Markdown editor beside the review surface.
+6. The top bar counts submitted comments as **N comments ready**. Choose **Copy prompt**, paste the short handoff into your existing agent conversation, and send once so the comments are handled together.
+7. Use **Open source** whenever you want the native Markdown editor beside the review surface.
 
 When the latest submitted turn is human-authored, that conversation shows **Waiting** until an agent appends an `A` response to the file. Other threads remain independently editable.
 
@@ -49,13 +50,14 @@ The claim needs a narrower scope and a supporting source.
 
 ## Use with an agent
 
-The extension is agent-neutral. Any agent that can read and edit files can respond by appending one valid `role=A` message to each open thread whose latest message is `role=H`.
+The extension is agent-neutral. Any agent that can read and edit files can respond by appending one valid `role=A` message to each open thread whose latest message is `role=H`. **Copy prompt** does not start another chat or call an API; it prepares a short message for the agent conversation you already have open. Repository guidance tells compatible agents to read all ready comments together before editing.
 
 Repository guidance is available in:
 
 - [Install agent rules](docs/install-agent-rules.md)
 - [Collaboration rules](rules/COLLAB-RULES.md)
 - [AGENTS.md addendum](rules/AGENTS_addendum.md)
+- [Claude guidance](CLAUDE.md)
 
 ## Develop locally
 
