@@ -13,6 +13,7 @@ dist/
 *.vsix
 .vscode-test/
 release/markdown-collab-*-test-kit/
+release/markdown-collab-*-kit/
 release/*.zip
 release/*.tar.gz
 

@@ -27,7 +27,7 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Build test kit
+      - name: Build release kit
         run: npm run test-kit
 
       - name: Create portable archive
@@ -35,10 +35,12 @@ jobs:
         shell: bash
         run: |
           VERSION="$(node -p "require('./package.json').version")"
-          KIT="markdown-collab-${VERSION}-test-kit"
-          (cd release && tar -czf "${KIT}.tar.gz" "${KIT}")
+          KIT="markdown-collab-${VERSION}-kit"
+          ARCHIVE="markdown-collab-${VERSION}.tar.gz"
+          (cd release && tar -czf "${ARCHIVE}" "${KIT}")
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "kit=${KIT}" >> "$GITHUB_OUTPUT"
+          echo "archive=${ARCHIVE}" >> "$GITHUB_OUTPUT"
 
       - name: Publish release assets
         env:
@@ -46,6 +48,7 @@ jobs:
           TAG: ${{ github.ref_name }}
           VERSION: ${{ steps.kit.outputs.version }}
           KIT: ${{ steps.kit.outputs.kit }}
+          ARCHIVE: ${{ steps.kit.outputs.archive }}
         shell: bash
         run: |
           PRERELEASE=()
@@ -54,9 +57,9 @@ jobs:
           fi
 
           TITLE="Markdown Collab ${VERSION}"
-          NOTES="Install the VSIX directly, or download the complete test kit. Standalone AGENTS.md and CLAUDE.md guidance files are also attached for quick project setup."
+          NOTES="Install the VSIX directly, or download the complete release kit. Standalone AGENTS.md and CLAUDE.md guidance files are also attached for quick project setup."
           VSIX="release/${KIT}/markdown-collab-${VERSION}.vsix"
-          ARCHIVE="release/${KIT}.tar.gz"
+          ARCHIVE="release/${ARCHIVE}"
           AGENTS="release/${KIT}/AGENTS.md"
           CLAUDE="release/${KIT}/CLAUDE.md"
 

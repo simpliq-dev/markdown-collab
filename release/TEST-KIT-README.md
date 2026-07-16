@@ -1,6 +1,6 @@
-# Markdown Collab {{VERSION}} test kit
+# Markdown Collab {{VERSION}} release kit
 
-This folder contains everything needed to test Markdown Collab on another machine without installing an unknown third-party service.
+This folder contains everything needed to install and use Markdown Collab on another machine without installing an unknown third-party service.
 
 ## Contents
 
@@ -33,7 +33,7 @@ Copy one file into the root of the Markdown project you want to review:
 
 If the project already has a file with that name, merge the Markdown Collab section into it rather than replacing existing project instructions.
 
-## Test the workflow
+## Try the workflow
 
 1. Open a `.md` file.
 2. Run **Markdown Collab: Open Collaborative Review**.
@@ -58,6 +58,6 @@ On PowerShell:
 Get-FileHash -Algorithm SHA256 .\{{VSIX_NAME}}
 ```
 
-## Remove the test build
+## Remove the release
 
 Open Extensions, find **Markdown Collab**, and choose **Uninstall**. All conversations remain in the Markdown files as HTML comments.

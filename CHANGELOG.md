@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.0.11] - 2026-07-16
 
 ### Changed
 
+- Published the first stable direct GitHub Release with clean, non-test-only asset names.
+- Added a latest-release link and badge to the repository README.
 - Replaced the Explorer card list and separate conversation panel with an opt-in Collaborative Review custom editor.
 - Rendered Markdown and contextual thread markers as one document surface, with a focused conversation rail and all-thread activity view.
 - Preserved independent composer state across multiple conversations and kept draft/save distinct from explicit submission.
