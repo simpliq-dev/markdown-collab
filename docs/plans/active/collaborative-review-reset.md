@@ -86,12 +86,12 @@ Acceptance:
 - Rendered screenshots were inspected under simulated VS Code light, dark, and high-contrast tokens; the document/rail hierarchy, focused anchor, controls, and conversation history remain legible in each.
 - Production and development dependency audits report zero known vulnerabilities after upgrading the project-local packager and applying non-breaking lockfile fixes.
 - VSIX packaging succeeds and includes the runtime Markdown renderer and packaged Webview assets while excluding `.agents`, tests, source, and archived material.
-- The lockfile passes `npm ci --dry-run`; the `0.0.9` packaged VSIX installs and enumerates as `simpliq.codex-collab` in an isolated VS Code extension directory.
+- The lockfile passes `npm ci --dry-run`; the `0.0.10` packaged VSIX installs and enumerates as `simpliq.codex-collab` in an isolated VS Code extension directory.
 - `npm run test-kit` produces a portable, checksum-verified folder with the branded VSIX, standalone agent guidance, and installation README. Tagged builds publish the VSIX and complete `.tar.gz` archive through GitHub Releases.
-- The public [`v0.0.9-test.1` prerelease](https://github.com/simpliq-dev/codex-collab/releases/tag/v0.0.9-test.1) passed its clean GitHub Actions build. Both assets were downloaded back from GitHub; the ZIP contents were inspected and the downloaded VSIX installed as `simpliq.codex-collab@0.0.9` in an isolated VS Code profile.
+- The public [`v0.0.10-test.1` prerelease](https://github.com/simpliq-dev/codex-collab/releases/tag/v0.0.10-test.1) passed its clean GitHub Actions build. The VSIX and `.tar.gz` assets were downloaded back from GitHub, their published SHA-256 digests matched, the archive contents were inspected, and the downloaded VSIX installed as `simpliq.codex-collab@0.0.10` in an isolated VS Code profile.
 - Official VS Code documentation supports an opt-in custom text editor over the standard `TextDocument`.
 - Human screenshots and observation rejected the existing sidebar-plus-panel UX.
-- Human testing confirms the reset UI experience is good; the remaining UX uncertainty is the complete clipboard-to-agent response loop.
+- Human testing confirms the reset UI is working well; the remaining UX uncertainty is the complete clipboard-to-agent response loop.
 
 ## Constraints and risks
 
@@ -103,4 +103,4 @@ Acceptance:
 
 ## Resume point
 
-In the real Extension Development Host, use the modified `tests/review_showcase.md` to verify that **Copy prompt** places the expected ready-count sentence on the Windows clipboard, then paste it into the existing agent conversation and verify that all ready comments are handled together with one `role=A` response per thread. Cursor remains a separate later validation target because it is not installed locally.
+Install the public `v0.0.10-test.1` VSIX for final human acceptance of per-thread and delete-all confirmation behavior in the real editor. The complete clipboard-to-agent response loop and Cursor behavior remain separate validation targets because Cursor is not installed locally.
