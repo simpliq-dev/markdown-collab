@@ -4,15 +4,17 @@
 
 # Markdown Collab
 
-Document-first, threaded collaboration for Markdown in VS Code-compatible editors.
+Threaded conversations for Markdown files, kept in the file itself.
 
-Markdown Collab turns an ordinary `.md` file into a focused review surface: readable Markdown, anchored conversations, several independent drafts, and explicit control over when comments are ready for an agent. The document and its discussion remain together in one portable file.
+When a document needs serious review, a single agent chat gets awkward. You lose where a question came from, comments compete for attention, and submitting one point can interrupt another. Markdown Collab lets you start several conversations beside the text they refer to, keep a separate draft in each one, and send a group of ready comments to your existing agent chat in one turn.
+
+It is built for people who want the convenience of Quip- or SharePoint-style discussions without putting their Markdown in a hosted discussion system. The document stays portable, inspectable, and under your control.
 
 Built by [Simpliq](https://simpliq.io).
 
 [![Latest release](https://img.shields.io/github/v/release/simpliq-dev/markdown-collab?label=latest%20release)](https://github.com/simpliq-dev/markdown-collab/releases/latest)
 
-**[Download from GitHub Releases](https://github.com/simpliq-dev/markdown-collab/releases)** · [How it works](#how-it-works) · [Privacy and trust](#privacy-and-trust)
+**[Download the latest release](https://github.com/simpliq-dev/markdown-collab/releases/latest)** · [A typical review pass](#a-typical-review-pass) · [Privacy and trust](#privacy-and-trust)
 
 ![Markdown Collab showing a rendered document, anchored thread markers, and a contextual conversation rail](imgs/markdown-collab-review.png)
 
@@ -20,9 +22,7 @@ Built by [Simpliq](https://simpliq.io).
 
 [Download the latest VSIX and `.tar.gz` release kit from GitHub Releases.](https://github.com/simpliq-dev/markdown-collab/releases/latest)
 
-## Why Markdown Collab?
-
-Normal agent chat is serial, while serious document work rarely is. Markdown Collab lets you open several discussions around different parts of a document, develop them independently, and then ask your existing agent conversation to handle the submitted comments together.
+## What you can do with it
 
 - Rendered Markdown with comments anchored beside the relevant text
 - Full multi-turn human/agent conversations, not disposable notes
@@ -41,17 +41,18 @@ Normal agent chat is serial, while serious document work rarely is. Markdown Col
 4. Open a `.md` file and run **Markdown Collab: Open Collaborative Review** from the Command Palette, editor title icon, or editor context menu.
 5. Hover a rendered block and choose **Start conversation**.
 
-## How it works
+## A typical review pass
 
-1. Write comments in as many anchored conversations as you need. Each composer keeps its own unfinished text.
-2. Use **Save draft** for a non-actionable note or **Submit turn** (`Ctrl+Enter`) when the comment is ready.
-3. When one or more conversations are waiting, choose **Copy prompt** beside **N comments ready**.
-4. Paste that short prompt into your existing agent conversation and send it once.
-5. The agent reads all ready comments together, edits the document where appropriate, and appends a response to every handled thread.
+1. Open a Markdown file and start Collaborative Review.
+2. Select a block and start a conversation. The thread stays beside the text it refers to.
+3. Open another conversation when a different point needs attention. Each thread keeps its own unfinished draft.
+4. Save a draft if you are still thinking. Choose **Submit turn** (`Ctrl+Enter`) when the comment is ready for the agent.
+5. When several comments are ready, choose **Copy prompt** beside **N comments ready**.
+6. Paste the short prompt into your existing agent conversation and send it once. The agent can then work through the ready comments with the document's instructions and context.
 
-Nothing is sent automatically. You choose which comments to submit and when to hand them to the agent.
+Nothing is sent automatically, and Markdown Collab does not call a model. You choose which comments to submit and when to hand them to the agent.
 
-## Agent setup
+## Give your agent the project guidance
 
 The release kit includes standalone guidance files:
 
@@ -60,7 +61,7 @@ The release kit includes standalone guidance files:
 
 See [Install agent guidance](docs/install-agent-rules.md) for merge instructions. The complete portable grammar is documented in [`COLLAB-RULES.md`](rules/COLLAB-RULES.md).
 
-## One file, including the conversations
+## The document remains the source of truth
 
 Submitted discussion is stored as HTML comments, so normal Markdown renderers hide it while the source remains readable and version-controllable:
 
@@ -76,6 +77,13 @@ The claim needs a narrower scope and a supporting source.
 ```
 
 The native Markdown source editor remains available at any time. Collaborative Review is an opt-in view over the same file, not a conversion or separate document.
+
+## What it does not do
+
+- It does not host your conversations or create a separate thread database.
+- It does not replace the normal Markdown source editor.
+- It does not inject text into Codex or Cursor chat; you copy the handoff prompt and send it yourself.
+- It does not promise Cursor support that has not been tested locally.
 
 ## Compatibility
 
@@ -113,7 +121,7 @@ Tagged builds run the test suite and publish a VSIX plus a complete `.tar.gz` re
 
 ## Project status
 
-Markdown Collab is currently distributed as a public test build for direct repository users rather than through the VS Code Marketplace. VS Code behavior is validated; broader Cursor testing remains welcome. Issues and focused feedback can be shared through the repository's [issue tracker](https://github.com/simpliq-dev/markdown-collab/issues).
+Markdown Collab is still early and is distributed directly through GitHub rather than the VS Code Marketplace. VS Code is the editor we validate locally. Cursor should work through the same extension APIs, but we have not tested it locally yet. Issues and focused feedback can be shared through the repository's [issue tracker](https://github.com/simpliq-dev/markdown-collab/issues).
 
 ## About Simpliq
 
