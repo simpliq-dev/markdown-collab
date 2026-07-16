@@ -180,7 +180,7 @@ export class ReviewEditorProvider implements vscode.CustomTextEditorProvider {
               requestId,
               ok: false,
               message:
-                "Collaborative Review could not complete that action. No turn was intentionally submitted; refresh the document and try again.",
+                "Markdown Collab could not complete that action. No turn was intentionally submitted; refresh the document and try again.",
             });
           }
         }
@@ -281,7 +281,7 @@ export class ReviewEditorProvider implements vscode.CustomTextEditorProvider {
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'none'; style-src ${webview.cspSource}; script-src ${webview.cspSource};">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${style}">
-  <title>Collaborative Review</title>
+  <title>Markdown Collab</title>
 </head>
 <body>
   <div id="app" aria-busy="true"></div>

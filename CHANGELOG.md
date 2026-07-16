@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Preserved independent composer state across multiple conversations and kept draft/save distinct from explicit submission.
 - Added a ready-comment count and one-click prompt copy for processing several submitted comments in one continuous external agent conversation.
 - Added repository guidance for AGENTS.md-aware and Claude agents to respond safely to ready comments.
+- Adopted **Markdown Collab** as the provider-neutral user-facing brand while retaining legacy technical IDs for compatibility.
+- Replaced the mixed AGENTS addendum with standalone drop-in `AGENTS.md` and `CLAUDE.md` guidance files.
 
 ### Security
 

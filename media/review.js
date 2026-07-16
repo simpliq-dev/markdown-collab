@@ -9,6 +9,8 @@
   let model = null;
   let requestSequence = 0;
   let statusMessage = "";
+  let copyPromptState = "idle";
+  let copyPromptResetTimer = null;
 
   function persist() {
     vscode.setState({ composers, focusedThreadId, reanchorThreadId, railHidden });
@@ -34,6 +36,9 @@
   function updateModel(nextModel) {
     const focus = captureComposerFocus();
     model = nextModel;
+    if (model.counts.waiting === 0) {
+      copyPromptState = "idle";
+    }
     for (const thread of model.threads) {
       if (
         !Object.prototype.hasOwnProperty.call(composers, thread.id) &&
@@ -92,7 +97,7 @@
   function renderTopbar() {
     const topbar = create("header", "review-topbar");
     const identity = create("div", "review-identity");
-    identity.append(create("div", "review-title", "Collaborative Review"));
+    identity.append(create("div", "review-title", "Markdown Collab"));
     identity.append(create("div", "review-file", model.fileName));
     topbar.append(identity);
 
@@ -137,7 +142,17 @@
         label
       )
     );
-    const copy = button("Copy prompt", "copy-prompt", "copy-agent-prompt", {
+    const copyLabel =
+      copyPromptState === "copied"
+        ? "Copied ✓"
+        : copyPromptState === "copying"
+          ? "Copying…"
+          : "Copy prompt";
+    const copy = button(
+      copyLabel,
+      `copy-prompt is-${copyPromptState}`,
+      "copy-agent-prompt",
+      {
       title:
         count > 0
           ? "Copy a short prompt for your current agent conversation"
@@ -146,8 +161,10 @@
         count > 0
           ? `Copy prompt for ${label}`
           : "No comments are ready for an agent prompt",
-    });
-    copy.disabled = count === 0 || model.errors.length > 0;
+      }
+    );
+    copy.disabled =
+      count === 0 || model.errors.length > 0 || copyPromptState === "copying";
     handoff.append(copy);
     return handoff;
   }
@@ -733,6 +750,8 @@
       return;
     }
     if (action === "copy-agent-prompt") {
+      copyPromptState = "copying";
+      render();
       send("copyAgentPrompt");
       return;
     }
@@ -831,10 +850,22 @@
       return;
     }
     if (message?.type === "clipboardResult") {
+      if (copyPromptResetTimer) {
+        clearTimeout(copyPromptResetTimer);
+        copyPromptResetTimer = null;
+      }
+      copyPromptState = message.ok ? "copied" : "idle";
       statusMessage = message.ok
-        ? `${message.count} ${message.count === 1 ? "comment" : "comments"} ready prompt copied. Paste it into your current agent conversation.`
+        ? `Agent prompt copied for ${message.count} ready ${message.count === 1 ? "comment" : "comments"}. Paste it into your current agent conversation.`
         : message.message || "The agent prompt could not be copied.";
       render();
+      if (message.ok) {
+        copyPromptResetTimer = setTimeout(() => {
+          copyPromptState = "idle";
+          copyPromptResetTimer = null;
+          render();
+        }, 1600);
+      }
       return;
     }
     if (message?.type !== "mutationResult") {

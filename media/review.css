@@ -167,10 +167,38 @@ button:disabled {
   background: var(--vscode-button-secondaryBackground, transparent);
   cursor: pointer;
   font-size: 11px;
+  transition:
+    transform var(--review-ease),
+    border-color var(--review-ease),
+    color var(--review-ease),
+    background var(--review-ease);
 }
 
 .copy-prompt:hover {
   background: var(--vscode-button-secondaryHoverBackground, var(--vscode-toolbar-hoverBackground));
+}
+
+.copy-prompt.is-copying {
+  opacity: 0.72;
+}
+
+.copy-prompt.is-copied {
+  border-color: color-mix(in srgb, var(--vscode-testing-iconPassed) 68%, var(--vscode-panel-border));
+  color: var(--vscode-testing-iconPassed, var(--vscode-foreground));
+  background: color-mix(in srgb, var(--vscode-testing-iconPassed) 13%, transparent);
+  animation: copy-confirm 420ms ease-out;
+}
+
+@keyframes copy-confirm {
+  0% {
+    transform: scale(0.92);
+  }
+  55% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .review-errors {

@@ -13,6 +13,7 @@ archive/**
 **/*.tsbuildinfo
 
 .agents/**
+agent-guidance/**
 imgs/01-threads-view_1600.png
 
 AGENTS.md

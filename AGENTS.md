@@ -65,15 +65,3 @@ Treat changes to this file, permissions, safety rules, release processes, and fr
 ## Closeout
 
 Report the outcome, meaningful files changed, validation and its result, assumptions or remaining risks, and the next useful action only when one exists.
-
-## Collaborative Review protocol
-
-Markdown files may contain anchored `CMT:THREAD` conversations created by this extension. When the human says that comments are ready for review:
-
-1. Open the named Markdown file and find every open thread whose latest message has `role=H`. These are the submitted comments for the turn.
-2. Read all submitted comments and their anchored passages before acting. Treat them as one coherent turn so edits and answers can share context across threads.
-3. Make the requested document edits when authorized, then append exactly one `role=A` message to every thread handled. Keep responses concise and state what changed or what blocks completion.
-4. Preserve thread IDs, anchors, earlier messages, and unrelated Markdown. Never act on `role=D`, convert a draft to submitted, respond to a closed thread, or append a duplicate agent response.
-5. If the prompt's displayed count differs from the file, trust the current file and mention the discrepancy in the chat response.
-
-The canonical grammar and mutation rules are documented in `rules/COLLAB-RULES.md`.

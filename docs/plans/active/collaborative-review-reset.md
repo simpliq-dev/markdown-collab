@@ -1,8 +1,8 @@
-# Active plan - Collaborative Review reset
+# Active plan - Markdown Collab review reset
 
 ## Outcome
 
-Deliver an opt-in Markdown **Collaborative Review** editor in which rendered prose and anchored, multi-turn conversations feel like one document. Several threads may retain drafts or await agent responses independently, and no turn becomes actionable until the human submits it.
+Deliver the opt-in **Markdown Collab** review editor in which rendered prose and anchored, multi-turn conversations feel like one document. Several threads may retain drafts or await agent responses independently, and no turn becomes actionable until the human submits it.
 
 ## Product acceptance
 
@@ -51,8 +51,10 @@ Acceptance:
 
 - [x] Count open threads awaiting an agent response as ready comments.
 - [x] Add a host-backed clipboard action with singular/plural prompt text and malformed-document protection.
+- [x] Confirm a successful copy with a short-lived **Copied ✓** label and restrained pulse.
 - [x] Teach AGENTS.md-aware and Claude agents to process all ready comments as one coherent turn.
 - [x] Keep handoff explicit and portable rather than injecting into a vendor chat surface.
+- [x] Adopt Markdown Collab as the user-facing brand without breaking legacy extension IDs.
 
 ### Slice 3 - Distribution confidence
 
@@ -73,7 +75,7 @@ Acceptance:
 
 - TypeScript build, Webview JavaScript syntax, and whitespace checks pass using the Codex-bundled Node runtime.
 - All 25 core and review-model regression tests pass, including singular/plural agent-prompt generation.
-- A headless rendered-interaction harness confirms the ready label and copy request as well as five anchored markers, no visible raw IDs, three preserved composers, isolation when another thread is submitted, keyboard thread navigation, re-anchor targeting, narrow-width readability, rail hiding/restoration, visible mutation notices, and disabled mutation controls for malformed data.
+- A headless rendered-interaction harness confirms the ready label, copy request, and **Copied ✓** feedback state as well as five anchored markers, no visible raw IDs, three preserved composers, isolation when another thread is submitted, keyboard thread navigation, re-anchor targeting, narrow-width readability, rail hiding/restoration, visible mutation notices, and disabled mutation controls for malformed data.
 - Rendered screenshots were inspected under simulated VS Code light, dark, and high-contrast tokens; the document/rail hierarchy, focused anchor, controls, and conversation history remain legible in each.
 - Production and development dependency audits report zero known vulnerabilities after upgrading the project-local packager and applying non-breaking lockfile fixes.
 - VSIX packaging succeeds and includes the runtime Markdown renderer and packaged Webview assets while excluding `.agents`, tests, source, and archived material.

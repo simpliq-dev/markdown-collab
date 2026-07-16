@@ -1,8 +1,8 @@
-# Project state - codex-collab
+# Project state - Markdown Collab
 
 ## Purpose
 
-codex-collab turns a Markdown file into a durable human-agent collaboration document. The prose and every anchored conversation travel together in the same file, while VS Code provides a calm review experience for sustained, multi-turn work.
+Markdown Collab turns a Markdown file into a durable human-agent collaboration document. The prose and every anchored conversation travel together in the same file, while VS Code-compatible editors provide a calm review experience for sustained, multi-turn work.
 
 The primary user is someone editing substantial Markdown with an agent and wanting several independent discussions to remain active without surrendering control over when any prompt becomes actionable.
 

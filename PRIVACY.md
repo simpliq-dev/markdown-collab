@@ -1,10 +1,10 @@
 # Privacy Policy
 
-codex-collab is a VS Code extension that represents threads as comment blocks embedded directly in your Markdown files.
+Markdown Collab is a VS Code-compatible extension that represents threads as comment blocks embedded directly in your Markdown files.
 
 ## Data collection
 
-codex-collab **does not collect, transmit, sell, or share** personal data.
+Markdown Collab **does not collect, transmit, sell, or share** personal data.
 
 - No telemetry is sent.
 - No external services are contacted by the extension.

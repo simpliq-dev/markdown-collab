@@ -1,6 +1,6 @@
-# codex-collab — Sample collaboration
+# Markdown Collab — Sample collaboration
 
-We started by turning the initial ideation into concrete product rules and a working plan. The core idea was locked: threads live inside Markdown, the extension is just a UI over the file, and Codex edits the file directly.
+We started by turning the initial ideation into concrete product rules and a working plan. The core idea was locked: threads live inside Markdown, the extension is just a UI over the file, and the chosen agent edits the file directly.
 
 <!-- CMT:THREAD id=K7Q9M status=closed ref=prev=1-->
 <!-- CMT:MSG id=K7Q9M role=H ts=2026-01-17T10:00:00Z
@@ -48,5 +48,3 @@ Test 2
 <!-- /CMT:THREAD id=58M96 -->
 
 Finally, we packaged it up and made ready to share on MS Marketplace.
-
-

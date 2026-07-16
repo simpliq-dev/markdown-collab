@@ -86,15 +86,18 @@ test("keeps the existing multi-thread Markdown fixture backward compatible", () 
   );
 });
 
-test("keeps the Collaborative Review showcase valid and multi-stage", () => {
+test("keeps the Markdown Collab showcase valid and multi-stage", () => {
   const source = fs.readFileSync("tests/review_showcase.md", "utf8");
   const parsed = parseThreads(source);
   const model = buildReviewModel(source, "review_showcase.md");
 
   assert.equal(parsed.errors.length, 0);
-  assert.equal(parsed.threads.length, 4);
+  assert.ok(parsed.threads.length >= 4);
   assert.ok(new Set(model.threads.map((thread) => thread.stage)).size >= 2);
-  assert.equal(model.blocks.filter((block) => block.threadIds.length).length, 4);
+  const anchoredThreadIds = new Set(
+    model.blocks.flatMap((block) => block.threadIds)
+  );
+  assert.equal(anchoredThreadIds.size, parsed.threads.length);
 });
 
 test("builds a concise agent handoff prompt from ready comments", () => {

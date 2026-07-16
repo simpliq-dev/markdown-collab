@@ -1,6 +1,6 @@
 {
   "name": "codex-collab",
-  "displayName": "codex-collab",
+  "displayName": "Markdown Collab",
   "description": "Document-first threaded conversations stored inside Markdown.",
   "version": "0.0.8",
   "publisher": "simpliq",
@@ -43,7 +43,7 @@
     "customEditors": [
       {
         "viewType": "codexCollab.reviewEditor",
-        "displayName": "Collaborative Review",
+        "displayName": "Markdown Collab Review",
         "selector": [
           {
             "filenamePattern": "*.md"
@@ -59,7 +59,7 @@
       {
         "command": "codexCollab.openReview",
         "title": "Open Collaborative Review",
-        "category": "Codex Collab",
+        "category": "Markdown Collab",
         "icon": "$(comment-discussion)"
       }
     ],

@@ -2,7 +2,7 @@
 
 ## 2026-07-15 - Use an opt-in custom text editor for Collaborative Review
 
-**Decision:** Register a `CustomTextEditorProvider` for Markdown with contribution priority `option`. Open it through an explicit **Codex Collab: Open Collaborative Review** command and keep the native source editor immediately available.
+**Decision:** Register a `CustomTextEditorProvider` for Markdown with contribution priority `option`. Open it through an explicit **Markdown Collab: Open Collaborative Review** command and keep the native source editor immediately available.
 
 **Why:** The rejected sidebar-plus-panel implementation cannot place rendered prose, anchors, and contextual conversations in one coherent interaction surface. VS Code custom text editors use the standard `TextDocument`, support normal text-document save and hot-exit behavior, and synchronize changes made by other editors or extensions. This gives the product a rich document surface without inventing a new file or document model.
 
@@ -47,3 +47,9 @@
 **Why:** Cross-extension composer injection is not a supported, portable contract and would be brittle across Codex, Claude, Cursor, and future agents. Clipboard handoff preserves one continuous chat, keeps the human in control of sending, and leaves the extension agent-neutral.
 
 **Boundary:** Copying never sends a prompt, starts a task, attaches a file, or invokes a model. Repository-level `AGENTS.md` and `CLAUDE.md` explain how an agent should process the submitted comments and append responses.
+
+## 2026-07-16 - Use Markdown Collab as the provider-neutral product brand
+
+**Decision:** Use **Markdown Collab** in the extension UI, commands, documentation, privacy language, and agent guidance. Keep the existing `codex-collab` package name, repository URL, and `codexCollab.*` contribution IDs as legacy technical identifiers for update and keybinding compatibility.
+
+**Why:** The file format and workflow support VS Code and Cursor as editors and Codex, Claude, or another file-editing agent. A provider-specific brand understates that scope, while changing published extension identity would create an avoidable migration break.
