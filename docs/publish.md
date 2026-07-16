@@ -23,7 +23,7 @@ git tag v0.0.10-test.1
 git push origin v0.0.10-test.1
 ```
 
-The `Publish GitHub release` workflow installs from the lockfile, runs the tests, builds the test kit, creates a compressed tar archive (`.tar.gz`), and publishes both the branded VSIX and complete kit on the repository's [Releases page](https://github.com/simpliq-dev/codex-collab/releases).
+The `Publish GitHub release` workflow installs from the lockfile, runs the tests, builds the test kit, creates a compressed tar archive (`.tar.gz`), and publishes the branded VSIX, complete kit, and standalone `AGENTS.md` and `CLAUDE.md` files on the repository's [Releases page](https://github.com/simpliq-dev/codex-collab/releases).
 
 Use a stable tag such as `v0.0.10` only after the test build is accepted. Rerunning a tag workflow replaces assets on an existing release rather than creating duplicate releases.
 
