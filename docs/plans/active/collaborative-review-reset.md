@@ -89,6 +89,7 @@ Acceptance:
 - The lockfile passes `npm ci --dry-run`; the `0.0.10` packaged VSIX installs and enumerates as `simpliq.codex-collab` in an isolated VS Code extension directory.
 - `npm run test-kit` produces a portable, checksum-verified folder with the branded VSIX, standalone agent guidance, and installation README. Tagged builds publish the VSIX and complete `.tar.gz` archive through GitHub Releases.
 - The public [`v0.0.10-test.1` prerelease](https://github.com/simpliq-dev/markdown-collab/releases/tag/v0.0.10-test.1) passed its clean GitHub Actions build. The VSIX and `.tar.gz` assets were downloaded back from GitHub, their published SHA-256 digests matched, the archive contents were inspected, and the downloaded VSIX installed as `simpliq.codex-collab@0.0.10` in an isolated VS Code profile.
+- The stable [`v0.0.11` release](https://github.com/simpliq-dev/markdown-collab/releases/tag/v0.0.11) publishes the renamed repository's current assets as `markdown-collab-0.0.11.vsix` and `markdown-collab-0.0.11.tar.gz`, with standalone `AGENTS.md` and `CLAUDE.md` attachments and no test-only download naming.
 - Official VS Code documentation supports an opt-in custom text editor over the standard `TextDocument`.
 - Human screenshots and observation rejected the existing sidebar-plus-panel UX.
 - Human testing confirms the reset UI is working well; the remaining UX uncertainty is the complete clipboard-to-agent response loop.
@@ -103,4 +104,4 @@ Acceptance:
 
 ## Resume point
 
-Install the public `v0.0.10-test.1` VSIX for final human acceptance of per-thread and delete-all confirmation behavior in the real editor. The complete clipboard-to-agent response loop and Cursor behavior remain separate validation targets because Cursor is not installed locally.
+Install the public `v0.0.11` VSIX for final human acceptance of per-thread and delete-all confirmation behavior in the real editor. The complete clipboard-to-agent response loop and Cursor behavior remain separate validation targets because Cursor is not installed locally.

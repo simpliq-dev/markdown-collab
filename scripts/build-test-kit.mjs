@@ -17,7 +17,7 @@ const packageJson = JSON.parse(
 const version = packageJson.version;
 const sourceVsix = path.join(root, `${packageJson.name}-${version}.vsix`);
 const releaseRoot = path.join(root, "release");
-const kitName = `markdown-collab-${version}-test-kit`;
+const kitName = `markdown-collab-${version}-kit`;
 const outputDir = path.join(releaseRoot, kitName);
 const brandedVsixName = `markdown-collab-${version}.vsix`;
 
