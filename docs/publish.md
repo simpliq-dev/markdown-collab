@@ -1,5 +1,9 @@
 # Publishing
 
+## Main branch policy
+
+All product changes enter `main` through a pull request. The protected branch requires the **Build, test, and package** check and resolved review conversations; only repository administrators can merge. A second-person approval is welcome but not mandatory while the project has a single active maintainer.
+
 ## GitHub Releases
 
 GitHub Releases are the primary distribution channel for test builds and direct VSIX installation. They keep generated binaries out of repository history while providing stable, versioned downloads.

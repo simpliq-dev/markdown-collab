@@ -65,3 +65,9 @@
 **Decision:** GitHub Releases remains the primary direct distribution channel. Tagged builds publish a standalone VSIX and a complete `.tar.gz` test kit containing the VSIX, agent guidance, installation README, and checksum.
 
 **Why:** The VSIX remains convenient for installation, while `.tar.gz` is a familiar, portable release format for a developer-oriented audience. Generated binaries stay out of repository history and every published asset is built from the tagged source by CI.
+
+## 2026-07-16 - Protect main with admin-only, validated pull-request merges
+
+**Decision:** Protect `main` so changes arrive through pull requests, the build/test/package check passes, and review conversations are resolved. Only repository administrators may update or merge into `main`; force pushes and branch deletion remain disabled.
+
+**Why:** Contributors should be able to propose changes without being able to publish them. Requiring the same reproducible validation before every merge protects the directly distributed VSIX while retaining a practical single-maintainer workflow with no mandatory second-person approval.
