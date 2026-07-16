@@ -5,6 +5,8 @@
 src/**
 tests/**
 docs/**
+scripts/**
+release/**
 templates/**
 rules/**
 archive/**

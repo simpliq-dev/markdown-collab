@@ -79,7 +79,8 @@ Acceptance:
 - Rendered screenshots were inspected under simulated VS Code light, dark, and high-contrast tokens; the document/rail hierarchy, focused anchor, controls, and conversation history remain legible in each.
 - Production and development dependency audits report zero known vulnerabilities after upgrading the project-local packager and applying non-breaking lockfile fixes.
 - VSIX packaging succeeds and includes the runtime Markdown renderer and packaged Webview assets while excluding `.agents`, tests, source, and archived material.
-- The lockfile passes `npm ci --dry-run`; the packaged VSIX installs and enumerates as `simpliq.codex-collab@0.0.8` in an isolated VS Code extension directory.
+- The lockfile passes `npm ci --dry-run`; the `0.0.9` packaged VSIX installs and enumerates as `simpliq.codex-collab` in an isolated VS Code extension directory.
+- `npm run test-kit` produces a portable, checksum-verified folder with the branded VSIX, standalone agent guidance, and installation README. Tagged builds publish the VSIX and complete ZIP through GitHub Releases.
 - Official VS Code documentation supports an opt-in custom text editor over the standard `TextDocument`.
 - Human screenshots and observation rejected the existing sidebar-plus-panel UX.
 - Human testing confirms the reset UI experience is good; the remaining UX uncertainty is the complete clipboard-to-agent response loop.

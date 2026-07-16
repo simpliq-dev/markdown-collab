@@ -1,0 +1,69 @@
+name: Publish GitHub release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build test kit
+        run: npm run test-kit
+
+      - name: Create portable archive
+        id: kit
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          KIT="markdown-collab-${VERSION}-test-kit"
+          (cd release && zip -r "${KIT}.zip" "${KIT}")
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "kit=${KIT}" >> "$GITHUB_OUTPUT"
+
+      - name: Publish release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ steps.kit.outputs.version }}
+          KIT: ${{ steps.kit.outputs.kit }}
+        shell: bash
+        run: |
+          PRERELEASE=()
+          if [[ "$TAG" == *-* ]]; then
+            PRERELEASE+=(--prerelease)
+          fi
+
+          TITLE="Markdown Collab ${VERSION}"
+          NOTES="Install the VSIX directly, or download the complete test kit for the VSIX, standalone AGENTS.md and CLAUDE.md guidance, installation README, and checksum."
+          VSIX="release/${KIT}/markdown-collab-${VERSION}.vsix"
+          ZIP="release/${KIT}.zip"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$VSIX" "$ZIP" --clobber
+          else
+            gh release create "$TAG" "$VSIX" "$ZIP" \
+              --verify-tag \
+              --title "$TITLE" \
+              --notes "$NOTES" \
+              "${PRERELEASE[@]}"
+          fi

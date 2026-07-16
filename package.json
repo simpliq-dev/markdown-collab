@@ -2,7 +2,7 @@
   "name": "codex-collab",
   "displayName": "Markdown Collab",
   "description": "Document-first threaded conversations stored inside Markdown.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "publisher": "simpliq",
   "author": "Simpliq",
   "license": "MIT",
@@ -86,6 +86,7 @@
     "watch": "node ./node_modules/typescript/bin/tsc -w -p .",
     "vscode:prepublish": "npm run build",
     "package": "node ./node_modules/@vscode/vsce/vsce package --no-rewrite-relative-links",
+    "test-kit": "npm run package && node scripts/build-test-kit.mjs",
     "publish": "node ./node_modules/@vscode/vsce/vsce publish"
   },
   "devDependencies": {

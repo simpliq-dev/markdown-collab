@@ -12,8 +12,9 @@ dist/
 # VS Code extension packaging / test artifacts
 *.vsix
 .vscode-test/
+release/markdown-collab-*-test-kit/
+release/*.zip
 
 # OS / editor noise
 .DS_Store
 Thumbs.db
-

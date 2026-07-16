@@ -59,6 +59,19 @@ Copy one standalone guidance file into the root of the Markdown project you want
 
 See [Install agent guidance](docs/install-agent-rules.md) for copy instructions. The detailed grammar remains in [COLLAB-RULES.md](rules/COLLAB-RULES.md).
 
+## Test on another machine
+
+The source repository is public at [simpliq-dev/codex-collab](https://github.com/simpliq-dev/codex-collab). Versioned VSIX and complete test-kit downloads are managed through the repository's [GitHub Releases page](https://github.com/simpliq-dev/codex-collab/releases).
+
+To assemble the same portable test folder from a checkout:
+
+```sh
+npm install
+npm run test-kit
+```
+
+The command creates `release/markdown-collab-<version>-test-kit/` with the branded VSIX, standalone `AGENTS.md` and `CLAUDE.md`, installation README, and SHA-256 checksum. The generated folder and binaries are intentionally ignored by Git; tagged builds publish them as release assets instead of committing binaries to repository history.
+
 ## Develop locally
 
 Prerequisites: VS Code, Node.js, and npm.
