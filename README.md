@@ -4,11 +4,11 @@
 
 # Markdown Collab
 
-LLMs are excellent thought partners for writing, from code and technical documents to essays and poetry. Markdown suits that work unusually well: it is plain text, visibly structured, and easy for both people and models to read and edit.
+LLMs are excellent thought partners for writing, from code and technical documents to essays and poetry. Markdown gives the writer and the LLM the same plain-text document, with headings, lists, and other structure left visible.
 
 What Markdown does not provide is a natural way to collaborate. Once a document grows beyond a few paragraphs, review in a chat becomes a trail of directions: “paragraph three”, “the sentence that begins…”, “back in the section above”. Context drifts away from the text it belongs to, and several discussions quickly become hard to manage.
 
-This is where Markdown Collab fits in. It is a VS Code-compatible extension that lets you collaborate on document writing with an LLM in much the same way you would with a colleague in Quip or SharePoint.
+Markdown Collab adds threaded collaboration to that document. It is a VS Code-compatible extension that lets you work with an LLM in much the same way you would with a colleague in Quip or SharePoint.
 
 Open a threaded conversation beside any passage, keep several discussions moving at once, and choose when to send a group of comments to your existing Codex, Claude, or other agent chat. The LLM can consider the comments together, edit the document, and respond in each thread without losing the wider context.
 
