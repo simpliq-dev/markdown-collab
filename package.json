@@ -9,10 +9,10 @@
   "homepage": "https://marketplace.visualstudio.com/publishers/simpliq",
   "repository": {
     "type": "git",
-    "url": "https://github.com/simpliq-dev/codex-collab.git"
+    "url": "https://github.com/simpliq-dev/markdown-collab.git"
   },
   "bugs": {
-    "url": "https://github.com/simpliq-dev/codex-collab/issues"
+    "url": "https://github.com/simpliq-dev/markdown-collab/issues"
   },
   "icon": "imgs/simpliq-icon-128.png",
   "keywords": [
