@@ -7,7 +7,7 @@ GitHub Releases are the primary distribution channel for test builds and direct 
 1) Update `CHANGELOG.md` and set the intended version with npm:
 
 ```bash
-npm version 0.0.9 --no-git-tag-version
+npm version 0.0.10 --no-git-tag-version
 ```
 
 2) Commit and push the version change.
@@ -15,13 +15,13 @@ npm version 0.0.9 --no-git-tag-version
 3) Create and push a tag. Tags containing a hyphen become prereleases:
 
 ```bash
-git tag v0.0.9-test.1
-git push origin v0.0.9-test.1
+git tag v0.0.10-test.1
+git push origin v0.0.10-test.1
 ```
 
-The `Publish GitHub release` workflow installs from the lockfile, runs the tests, builds the test kit, creates a ZIP, and publishes both the branded VSIX and complete kit on the repository's [Releases page](https://github.com/simpliq-dev/codex-collab/releases).
+The `Publish GitHub release` workflow installs from the lockfile, runs the tests, builds the test kit, creates a compressed tar archive (`.tar.gz`), and publishes both the branded VSIX and complete kit on the repository's [Releases page](https://github.com/simpliq-dev/codex-collab/releases).
 
-Use a stable tag such as `v0.0.9` only after the test build is accepted. Rerunning a tag workflow replaces assets on an existing release rather than creating duplicate releases.
+Use a stable tag such as `v0.0.10` only after the test build is accepted. Rerunning a tag workflow replaces assets on an existing release rather than creating duplicate releases.
 
 ## VS Code Marketplace
 

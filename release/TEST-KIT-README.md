@@ -39,9 +39,10 @@ If the project already has a file with that name, merge the Markdown Collab sect
 2. Run **Markdown Collab: Open Collaborative Review**.
 3. Start or open several anchored conversations.
 4. Save drafts or submit comments independently.
-5. Choose **Copy prompt** beside **N comments ready**.
-6. Paste the copied sentence into the existing agent conversation and send it once.
-7. Confirm the agent processes all ready comments together and appends one response to each handled thread.
+5. Confirm that deleting one conversation and deleting all conversations each require a separate warning confirmation; cancel the warning to preserve the document.
+6. Choose **Copy prompt** beside **N comments ready**.
+7. Paste the copied sentence into the existing agent conversation and send it once.
+8. Confirm the agent processes all ready comments together and appends one response to each handled thread.
 
 ## Verify the package
 

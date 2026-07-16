@@ -53,3 +53,15 @@
 **Decision:** Use **Markdown Collab** in the extension UI, commands, documentation, privacy language, and agent guidance. Keep the existing `codex-collab` package name, repository URL, and `codexCollab.*` contribution IDs as legacy technical identifiers for update and keybinding compatibility.
 
 **Why:** The file format and workflow support VS Code and Cursor as editors and Codex, Claude, or another file-editing agent. A provider-specific brand understates that scope, while changing published extension identity would create an avoidable migration break.
+
+## 2026-07-16 - Confirm destructive conversation deletion in the review surface
+
+**Decision:** Allow deletion of one conversation and deletion of all conversations from Collaborative Review. Both actions open an explicit confirmation dialog before any mutation is requested. Cancellation must leave the file untouched, and malformed documents remain read-only.
+
+**Why:** File-backed conversations need an intentional way to remove obsolete or sensitive discussion, but deletion is permanent and bypasses the reversible open/closed lifecycle. Keeping the warning in the review surface makes the scope visible and preserves the normal document-version guard.
+
+## 2026-07-16 - Publish complete test kits as compressed tar archives
+
+**Decision:** GitHub Releases remains the primary direct distribution channel. Tagged builds publish a standalone VSIX and a complete `.tar.gz` test kit containing the VSIX, agent guidance, installation README, and checksum.
+
+**Why:** The VSIX remains convenient for installation, while `.tar.gz` is a familiar, portable release format for a developer-oriented audience. Generated binaries stay out of repository history and every published asset is built from the tagged source by CI.

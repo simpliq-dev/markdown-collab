@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
 import {
   createThread,
+  deleteAllThreads,
+  deleteThread,
   MutationResult,
   reanchorThread,
   saveDraft,
@@ -215,6 +217,9 @@ export class ReviewEditorProvider implements vscode.CustomTextEditorProvider {
       const block = model.blocks.find((item) => item.id === message.blockId);
       return block ? createThread(text, block.range.start, options) : null;
     }
+    if (type === "deleteAllThreads") {
+      return deleteAllThreads(text, options);
+    }
 
     const threadId =
       typeof message.threadId === "string" &&
@@ -233,6 +238,9 @@ export class ReviewEditorProvider implements vscode.CustomTextEditorProvider {
     }
     if (type === "toggleStatus") {
       return toggleStatus(text, threadId, options);
+    }
+    if (type === "deleteThread") {
+      return deleteThread(text, threadId, options);
     }
     if (type === "reanchorThread" && typeof message.blockId === "string") {
       const model = this.modelFor(document);

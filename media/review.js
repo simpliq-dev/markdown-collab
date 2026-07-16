@@ -11,6 +11,7 @@
   let statusMessage = "";
   let copyPromptState = "idle";
   let copyPromptResetTimer = null;
+  let deleteConfirmation = null;
 
   function persist() {
     vscode.setState({ composers, focusedThreadId, reanchorThreadId, railHidden });
@@ -47,11 +48,28 @@
         composers[thread.id] = thread.draftBody;
       }
     }
+    const existingThreadIds = new Set(model.threads.map((thread) => thread.id));
+    for (const threadId of Object.keys(composers)) {
+      if (!existingThreadIds.has(threadId)) {
+        delete composers[threadId];
+      }
+    }
     if (
       focusedThreadId &&
       !model.threads.some((thread) => thread.id === focusedThreadId)
     ) {
       focusedThreadId = null;
+    }
+    if (
+      deleteConfirmation?.type === "thread" &&
+      !existingThreadIds.has(deleteConfirmation.threadId)
+    ) {
+      deleteConfirmation = null;
+    } else if (
+      deleteConfirmation?.type === "all" &&
+      model.threads.length === 0
+    ) {
+      deleteConfirmation = null;
     }
     app.setAttribute("aria-busy", "false");
     render();
@@ -92,6 +110,9 @@
     live.setAttribute("aria-live", "polite");
     live.textContent = statusMessage;
     app.append(live);
+    if (deleteConfirmation) {
+      app.append(renderDeleteConfirmation());
+    }
   }
 
   function renderTopbar() {
@@ -210,6 +231,66 @@
       })
     );
     return notice;
+  }
+
+  function renderDeleteConfirmation() {
+    const deletingAll = deleteConfirmation.type === "all";
+    const count = model.threads.length;
+    const overlay = create("div", "confirmation-backdrop");
+    const dialog = create("section", "confirmation-dialog");
+    dialog.setAttribute("role", "alertdialog");
+    dialog.setAttribute("aria-modal", "true");
+    dialog.setAttribute("aria-labelledby", "delete-confirmation-title");
+    dialog.setAttribute("aria-describedby", "delete-confirmation-description");
+    const title = create(
+      "h2",
+      "",
+      deletingAll
+        ? `Delete all ${count} ${count === 1 ? "conversation" : "conversations"}?`
+        : "Delete this conversation?"
+    );
+    title.id = "delete-confirmation-title";
+    dialog.append(title);
+    const description = create(
+      "p",
+      "",
+      deletingAll
+        ? "This removes every conversation and draft from this Markdown file. The document prose remains unchanged."
+        : "This removes the complete conversation, its history, and any saved or unsaved draft text from the Markdown file."
+    );
+    description.id = "delete-confirmation-description";
+    dialog.append(description);
+    const warning = create(
+      "p",
+      "confirmation-warning",
+      "Only continue if you are sure."
+    );
+    dialog.append(warning);
+    const actions = create("div", "confirmation-actions");
+    const cancel = button("Cancel", "secondary", "cancel-delete");
+    const confirm = button(
+      deleteConfirmation.sending
+        ? "Deleting…"
+        : deletingAll
+          ? "Delete all"
+          : "Delete conversation",
+      "danger-button",
+      "confirm-delete"
+    );
+    cancel.disabled = deleteConfirmation.sending;
+    confirm.disabled = deleteConfirmation.sending;
+    actions.append(cancel, confirm);
+    dialog.append(actions);
+    overlay.append(dialog);
+    return overlay;
+  }
+
+  function requestDeleteConfirmation(type, threadId) {
+    deleteConfirmation = { type, threadId, sending: false };
+    render();
+    requestAnimationFrame(() => {
+      document.querySelector('[data-action="cancel-delete"]')?.focus();
+    });
   }
 
   function renderReanchorBanner() {
@@ -345,6 +426,12 @@
       )
     );
     header.append(heading);
+    const deleteAll = button("Delete all", "danger-quiet", "request-delete-all", {
+      title: "Delete every conversation in this document",
+      ariaLabel: "Delete all conversations in this document",
+    });
+    deleteAll.disabled = model.errors.length > 0 || model.threads.length === 0;
+    header.append(deleteAll);
     view.append(header);
 
     if (model.threads.length === 0) {
@@ -429,6 +516,14 @@
     );
     statusAction.disabled = model.errors.length > 0;
     statusRow.append(statusAction);
+    const deleteAction = button(
+      "Delete",
+      "danger-quiet",
+      "request-delete-thread",
+      { ariaLabel: "Delete this conversation" }
+    );
+    deleteAction.disabled = model.errors.length > 0;
+    statusRow.append(deleteAction);
     header.append(statusRow);
     view.append(header);
 
@@ -718,7 +813,11 @@
       }
       return;
     }
-    if (event.altKey && event.key === "ArrowDown") {
+    if (event.key === "Escape" && deleteConfirmation) {
+      event.preventDefault();
+      deleteConfirmation = null;
+      render();
+    } else if (event.altKey && event.key === "ArrowDown") {
       event.preventDefault();
       moveThread(1);
     } else if (event.altKey && event.key === "ArrowUp") {
@@ -758,6 +857,30 @@
     if (action === "dismiss-notice") {
       statusMessage = "";
       render();
+      return;
+    }
+    if (action === "request-delete-all") {
+      requestDeleteConfirmation("all");
+      return;
+    }
+    if (action === "request-delete-thread" && focusedThreadId) {
+      requestDeleteConfirmation("thread", focusedThreadId);
+      return;
+    }
+    if (action === "cancel-delete") {
+      deleteConfirmation = null;
+      render();
+      return;
+    }
+    if (action === "confirm-delete" && deleteConfirmation) {
+      const pending = deleteConfirmation;
+      deleteConfirmation = { ...pending, sending: true };
+      render();
+      if (pending.type === "all") {
+        send("deleteAllThreads");
+      } else if (pending.threadId) {
+        send("deleteThread", { threadId: pending.threadId });
+      }
       return;
     }
     if (action === "previous-thread") {
@@ -872,6 +995,7 @@
       return;
     }
     if (!message.ok) {
+      deleteConfirmation = null;
       statusMessage = message.message || "The conversation could not be changed.";
       render();
       return;
@@ -888,6 +1012,20 @@
     } else if (message.action === "reanchorThread") {
       reanchorThreadId = null;
       statusMessage = "Conversation moved to its new passage.";
+    } else if (message.action === "deleteThread") {
+      if (typeof message.threadId === "string") {
+        delete composers[message.threadId];
+      }
+      focusedThreadId = null;
+      deleteConfirmation = null;
+      statusMessage = "Conversation deleted.";
+    } else if (message.action === "deleteAllThreads") {
+      for (const threadId of Object.keys(composers)) {
+        delete composers[threadId];
+      }
+      focusedThreadId = null;
+      deleteConfirmation = null;
+      statusMessage = "All conversations deleted from this document.";
     } else {
       statusMessage = "Conversation updated.";
     }

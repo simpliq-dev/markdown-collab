@@ -2,7 +2,7 @@
   "name": "codex-collab",
   "displayName": "Markdown Collab",
   "description": "Document-first threaded conversations stored inside Markdown.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "publisher": "simpliq",
   "author": "Simpliq",
   "license": "MIT",

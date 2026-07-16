@@ -15,6 +15,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Added repository guidance for AGENTS.md-aware and Claude agents to respond safely to ready comments.
 - Adopted **Markdown Collab** as the provider-neutral user-facing brand while retaining legacy technical IDs for compatibility.
 - Replaced the mixed AGENTS addendum with standalone drop-in `AGENTS.md` and `CLAUDE.md` guidance files.
+- Added per-conversation and document-wide conversation deletion, each protected by an explicit confirmation warning.
+- Reworked the repository README around installation, daily use, the current review UI, privacy, and direct GitHub Release distribution.
+- Changed complete release-kit archives from ZIP to `.tar.gz` while retaining a separately downloadable VSIX.
 
 ### Security
 

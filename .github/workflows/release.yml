@@ -36,7 +36,7 @@ jobs:
         run: |
           VERSION="$(node -p "require('./package.json').version")"
           KIT="markdown-collab-${VERSION}-test-kit"
-          (cd release && zip -r "${KIT}.zip" "${KIT}")
+          (cd release && tar -czf "${KIT}.tar.gz" "${KIT}")
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "kit=${KIT}" >> "$GITHUB_OUTPUT"
 
@@ -56,12 +56,12 @@ jobs:
           TITLE="Markdown Collab ${VERSION}"
           NOTES="Install the VSIX directly, or download the complete test kit for the VSIX, standalone AGENTS.md and CLAUDE.md guidance, installation README, and checksum."
           VSIX="release/${KIT}/markdown-collab-${VERSION}.vsix"
-          ZIP="release/${KIT}.zip"
+          ARCHIVE="release/${KIT}.tar.gz"
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" "$VSIX" "$ZIP" --clobber
+            gh release upload "$TAG" "$VSIX" "$ARCHIVE" --clobber
           else
-            gh release create "$TAG" "$VSIX" "$ZIP" \
+            gh release create "$TAG" "$VSIX" "$ARCHIVE" \
               --verify-tag \
               --title "$TITLE" \
               --notes "$NOTES" \

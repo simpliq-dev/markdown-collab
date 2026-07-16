@@ -135,6 +135,36 @@ textarea:focus-visible,
   background: var(--vscode-button-hoverBackground);
 }
 
+.danger-quiet,
+.danger-button {
+  min-height: 30px;
+  border-radius: 6px;
+  padding: 5px 10px;
+  color: var(--vscode-errorForeground);
+  cursor: pointer;
+}
+
+.danger-quiet {
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.danger-quiet:hover {
+  border-color: color-mix(in srgb, var(--vscode-errorForeground) 48%, transparent);
+  background: color-mix(in srgb, var(--vscode-errorForeground) 9%, transparent);
+}
+
+.danger-button {
+  border: 1px solid var(--vscode-inputValidation-errorBorder, var(--vscode-errorForeground));
+  color: var(--vscode-inputValidation-errorForeground, var(--vscode-foreground));
+  background: var(--vscode-inputValidation-errorBackground, transparent);
+  font-weight: 600;
+}
+
+.danger-button:hover {
+  background: color-mix(in srgb, var(--vscode-errorForeground) 18%, var(--vscode-editor-background));
+}
+
 button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
@@ -221,6 +251,63 @@ button:disabled {
   color: var(--vscode-foreground);
   background: var(--vscode-editorInfo-background, var(--vscode-editor-background));
   font-size: 12px;
+}
+
+.confirmation-backdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, #000 58%, transparent);
+  backdrop-filter: blur(3px);
+}
+
+.confirmation-dialog {
+  width: min(430px, 100%);
+  border: 1px solid var(--vscode-panel-border);
+  border-radius: 10px;
+  padding: 20px;
+  color: var(--vscode-foreground);
+  background: var(--vscode-editorWidget-background, var(--vscode-editor-background));
+  box-shadow: 0 18px 56px color-mix(in srgb, #000 45%, transparent);
+  animation: confirmation-enter 150ms ease-out;
+}
+
+.confirmation-dialog h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.confirmation-dialog p {
+  margin: 0;
+  color: var(--vscode-descriptionForeground);
+  line-height: 1.5;
+}
+
+.confirmation-dialog .confirmation-warning {
+  margin-top: 12px;
+  color: var(--vscode-errorForeground);
+  font-weight: 600;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+@keyframes confirmation-enter {
+  from {
+    transform: translateY(5px) scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 .notice-dismiss {
@@ -968,7 +1055,10 @@ body.vscode-high-contrast .thread-marker,
 body.vscode-high-contrast .start-thread,
 body.vscode-high-contrast .reanchor-target,
 body.vscode-high-contrast .count-ready,
-body.vscode-high-contrast .copy-prompt {
+body.vscode-high-contrast .copy-prompt,
+body.vscode-high-contrast .danger-quiet,
+body.vscode-high-contrast .danger-button,
+body.vscode-high-contrast .confirmation-dialog {
   border-color: var(--vscode-contrastBorder);
 }
 

@@ -11,6 +11,8 @@ const {
 const {
   appendAgentMessage,
   createThread,
+  deleteAllThreads,
+  deleteThread,
   reanchorThread,
   saveDraft,
   submitHumanMessage,
@@ -298,6 +300,53 @@ test("uses targeted edits for message and status changes", () => {
   assert.equal(toggled.ok, true);
   assert.deepEqual(toggled.edit.range, thread.header.range);
   assert.equal(parseThreads(toggled.text).threads[0].status, "closed");
+});
+
+test("deletes one conversation without disturbing adjacent Markdown or threads", () => {
+  const first = threadWithMessages({
+    id: "K7Q9M",
+    messages: [{ role: "H", body: "First question." }],
+  });
+  const second = threadWithMessages({
+    id: "M3T9X",
+    messages: [{ role: "A", body: "Second answer." }],
+  });
+  const source = ["# Title", "", "Before.", "", first, "", second, "", "After."].join(
+    "\n"
+  );
+
+  const result = deleteThread(source, "K7Q9M");
+  assert.equal(result.ok, true);
+  assert.equal(result.threadId, "K7Q9M");
+  assert.equal(result.text.includes("K7Q9M"), false);
+  assert.equal(result.text.includes("M3T9X"), true);
+  assert.equal(result.text.includes("Before.\n\n<!-- CMT:THREAD id=M3T9X"), true);
+  assert.equal(result.text.endsWith("\n\nAfter."), true);
+});
+
+test("deletes every conversation while preserving document prose and line endings", () => {
+  const first = threadWithMessages({
+    id: "K7Q9M",
+    messages: [{ role: "H", body: "First question." }],
+  }).replaceAll("\n", "\r\n");
+  const second = threadWithMessages({
+    id: "M3T9X",
+    messages: [{ role: "A", body: "Second answer." }],
+  }).replaceAll("\n", "\r\n");
+  const source = ["# Title", "Before.", first, "Middle.", second, "After."]
+    .join("\r\n\r\n")
+    .concat("\r\n");
+
+  const result = deleteAllThreads(source, { newline: "\r\n" });
+  assert.equal(result.ok, true);
+  assert.equal(result.text, "# Title\r\n\r\nBefore.\r\n\r\nMiddle.\r\n\r\nAfter.\r\n");
+  assert.equal(parseThreads(result.text).threads.length, 0);
+});
+
+test("blocks conversation deletion when thread data is malformed", () => {
+  const malformed = threadBlock({ footerId: "M3T9X" });
+  assert.equal(deleteThread(malformed, "K7Q9M").code, "document-invalid");
+  assert.equal(deleteAllThreads(malformed).code, "document-invalid");
 });
 
 test("creates a deterministic valid thread and preserves CRLF endings", () => {

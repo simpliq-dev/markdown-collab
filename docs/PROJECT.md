@@ -17,6 +17,7 @@ The primary user is someone editing substantial Markdown with an agent and wanti
 - **The conversation is full-fidelity from the first turn.** History, authorship, pending state, anchored context, and a substantial composer are present from creation onward.
 - **Raw Markdown remains available.** Collaborative Review is an opt-in custom text editor over the same `TextDocument`; opening the source editor never converts or forks the file.
 - **The interface is document-first and calm.** Internal IDs and storage metadata are secondary. The dominant visual hierarchy is prose, contextual discussion, and clear next action.
+- **Destructive actions are explicit.** Deleting one conversation or every conversation requires a separate in-view confirmation that states the scope and permanence of the operation.
 
 ## Interaction model
 
@@ -27,7 +28,7 @@ The primary user is someone editing substantial Markdown with an agent and wanti
 5. **Submit** converts or appends the turn as `role=H`. That thread becomes waiting while other threads remain independently editable or submit-ready.
 6. **N comments ready** counts open threads awaiting an agent response. **Copy prompt** prepares one handoff that asks the current agent conversation to process them together.
 7. An agent reads every ready comment as one coherent turn, edits the document, and appends `role=A` responses. The review surface updates without replacing unrelated composer state.
-8. The human can continue, resolve/reopen, re-anchor, browse all conversations, or open the Markdown source.
+8. The human can continue, resolve/reopen, re-anchor, browse all conversations, delete conversations with confirmation, or open the Markdown source.
 
 ## Durable boundaries
 
@@ -41,7 +42,7 @@ The primary user is someone editing substantial Markdown with an agent and wanti
 
 ## Current reality
 
-The opt-in Collaborative Review custom editor now provides rendered Markdown, anchored markers, full conversation history, independent composers, guarded draft/submit mutations, responsive layouts, keyboard navigation, and an all-thread activity view. A file-backed ready count and copied handoff prompt connect several submitted comments to one continuous external agent conversation without a vendor API.
+The opt-in Collaborative Review custom editor now provides rendered Markdown, anchored markers, full conversation history, independent composers, guarded draft/submit/delete mutations, responsive layouts, keyboard navigation, and an all-thread activity view. A file-backed ready count and copied handoff prompt connect several submitted comments to one continuous external agent conversation without a vendor API.
 
 The active reset is tracked in [plans/active/collaborative-review-reset.md](plans/active/collaborative-review-reset.md). Consequential rationale is in [DECISIONS.md](DECISIONS.md), and superseded material remains under [archive](archive/README.md) and [plans/archive](plans/archive/).
 

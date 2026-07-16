@@ -174,6 +174,49 @@ export function toggleStatus(
   return replacement(text, target.thread.header.range, updated);
 }
 
+export function deleteThread(
+  text: string,
+  threadId: string,
+  options: MutationOptions = {}
+): MutationResult {
+  const target = findMutableThread(text, threadId);
+  if (!target.ok) {
+    return target.result;
+  }
+  const edit = threadDeletionEdit(text, target.thread.range, newline(options));
+  const updated = applyEdit(text, edit);
+  return { ok: true, text: updated, edit, threadId };
+}
+
+export function deleteAllThreads(
+  text: string,
+  options: MutationOptions = {}
+): MutationResult {
+  const parsed = parseThreads(text);
+  if (parsed.errors.length > 0) {
+    return invalidDocument(parsed.errors);
+  }
+  if (parsed.threads.length === 0) {
+    return failure("thread-not-found", "No conversations were found.");
+  }
+
+  let updated = text;
+  const ordered = [...parsed.threads].sort(
+    (left, right) => right.range.start - left.range.start
+  );
+  for (const thread of ordered) {
+    updated = applyEdit(
+      updated,
+      threadDeletionEdit(updated, thread.range, newline(options))
+    );
+  }
+  return {
+    ok: true,
+    text: updated,
+    edit: { range: { start: 0, end: text.length }, text: updated },
+  };
+}
+
 export function createThread(
   text: string,
   targetOffset: number,
@@ -342,8 +385,39 @@ function appendMessageBlock(
 }
 
 function replacement(text: string, range: Range, value: string): MutationResult {
-  const updated = text.slice(0, range.start) + value + text.slice(range.end);
+  const updated = applyEdit(text, { range, text: value });
   return { ok: true, text: updated, edit: { range, text: value } };
+}
+
+function applyEdit(text: string, edit: MutationEdit): string {
+  return (
+    text.slice(0, edit.range.start) + edit.text + text.slice(edit.range.end)
+  );
+}
+
+function threadDeletionEdit(
+  text: string,
+  threadRange: Range,
+  lineEnding: "\n" | "\r\n"
+): MutationEdit {
+  let start = threadRange.start;
+  let end = threadRange.end;
+  while (start > 0 && /[ \t\r\n]/.test(text[start - 1])) {
+    start -= 1;
+  }
+  while (end < text.length && /[ \t\r\n]/.test(text[end])) {
+    end += 1;
+  }
+
+  const hasContentBefore = start > 0;
+  const hasContentAfter = end < text.length;
+  const replacementText =
+    hasContentBefore && hasContentAfter
+      ? `${lineEnding}${lineEnding}`
+      : hasContentBefore
+        ? lineEnding
+        : "";
+  return { range: { start, end }, text: replacementText };
 }
 
 function failure(

@@ -56,12 +56,19 @@ Acceptance:
 - [x] Keep handoff explicit and portable rather than injecting into a vendor chat surface.
 - [x] Adopt Markdown Collab as the user-facing brand without breaking legacy extension IDs.
 
+### Slice 2.2 - Intentional conversation deletion
+
+- [x] Add guarded core mutations for deleting one conversation or every conversation while preserving surrounding Markdown.
+- [x] Require an explicit warning confirmation before either deletion request reaches the extension host.
+- [x] Keep malformed documents read-only and discard stale local composer state only after the corresponding conversation disappears.
+- [x] Cover cancellation, confirmed requests, mutation behavior, line endings, and malformed input in automated checks.
+
 ### Slice 3 - Distribution confidence
 
 - [x] Validate a clean dependency install, build, tests, package contents, release download, and isolated VSIX installation.
 - [ ] Exercise the main workflow in supported VS Code.
 - [ ] Exercise the same VSIX in current Cursor and record any editor-specific limitations.
-- [ ] Update user documentation and screenshots only after UX acceptance.
+- [x] Update user documentation and screenshots after UX acceptance.
 
 ## Validation contract
 
@@ -74,13 +81,13 @@ Acceptance:
 ## Current evidence
 
 - TypeScript build, Webview JavaScript syntax, and whitespace checks pass using the Codex-bundled Node runtime.
-- All 25 core and review-model regression tests pass, including singular/plural agent-prompt generation.
-- A headless rendered-interaction harness confirms the ready label, copy request, and **Copied ✓** feedback state as well as five anchored markers, no visible raw IDs, three preserved composers, isolation when another thread is submitted, keyboard thread navigation, re-anchor targeting, narrow-width readability, rail hiding/restoration, visible mutation notices, and disabled mutation controls for malformed data.
+- All 28 core and review-model regression tests pass, including singular/plural agent-prompt generation and guarded deletion mutations.
+- A headless rendered-interaction harness confirms the ready label, copy request, and **Copied ✓** feedback state as well as five anchored markers, no visible raw IDs, three preserved composers, isolation when another thread is submitted, per-thread and delete-all confirmations, cancellation without a mutation request, confirmed deletion requests, keyboard thread navigation, re-anchor targeting, narrow-width readability, rail hiding/restoration, visible mutation notices, and disabled mutation controls for malformed data.
 - Rendered screenshots were inspected under simulated VS Code light, dark, and high-contrast tokens; the document/rail hierarchy, focused anchor, controls, and conversation history remain legible in each.
 - Production and development dependency audits report zero known vulnerabilities after upgrading the project-local packager and applying non-breaking lockfile fixes.
 - VSIX packaging succeeds and includes the runtime Markdown renderer and packaged Webview assets while excluding `.agents`, tests, source, and archived material.
 - The lockfile passes `npm ci --dry-run`; the `0.0.9` packaged VSIX installs and enumerates as `simpliq.codex-collab` in an isolated VS Code extension directory.
-- `npm run test-kit` produces a portable, checksum-verified folder with the branded VSIX, standalone agent guidance, and installation README. Tagged builds publish the VSIX and complete ZIP through GitHub Releases.
+- `npm run test-kit` produces a portable, checksum-verified folder with the branded VSIX, standalone agent guidance, and installation README. Tagged builds publish the VSIX and complete `.tar.gz` archive through GitHub Releases.
 - The public [`v0.0.9-test.1` prerelease](https://github.com/simpliq-dev/codex-collab/releases/tag/v0.0.9-test.1) passed its clean GitHub Actions build. Both assets were downloaded back from GitHub; the ZIP contents were inspected and the downloaded VSIX installed as `simpliq.codex-collab@0.0.9` in an isolated VS Code profile.
 - Official VS Code documentation supports an opt-in custom text editor over the standard `TextDocument`.
 - Human screenshots and observation rejected the existing sidebar-plus-panel UX.
