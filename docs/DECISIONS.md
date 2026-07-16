@@ -68,6 +68,6 @@
 
 ## 2026-07-16 - Protect main with validated pull-request merges
 
-**Decision:** Protect `main` so changes arrive through pull requests, the build/test/package check passes, and review conversations are resolved. Apply the requirements to administrators as well; keep force pushes and branch deletion disabled.
+**Decision:** Protect `main` so changes arrive through pull requests, the build/test/package check passes, and review conversations are resolved. Apply the requirements to administrators as well; keep force pushes and branch deletion disabled. Layer an **Admin-only main updates** ruleset over the protection rule so only the `simpliq-dev` administrator can update or merge into `main`.
 
-**Why:** Requiring the same reproducible validation before every merge protects the directly distributed VSIX while retaining a practical single-maintainer workflow with no mandatory second-person approval. Because the repository is owned by a personal GitHub account, literal admin-only merging also requires every non-admin collaborator to have no more than triage access; GitHub only supports per-user/team protected-branch restrictions for organization repositories.
+**Why:** Requiring the same reproducible validation before every merge protects the directly distributed VSIX while retaining a practical single-maintainer workflow with no mandatory second-person approval. The targeted ruleset lets write collaborators continue pushing feature branches and opening pull requests without granting them authority to publish changes to `main`.
