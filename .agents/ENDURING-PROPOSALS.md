@@ -27,3 +27,14 @@ Status values: `proposed`, `accepted-for-round-up`, `deferred`, `rejected`, `pro
 - Keep project-specific: The current TypeScript dependencies, the validator incident, generated pnpm files, repository paths, and any particular sidecar names or package versions must not transfer.
 - Promotion target: A shared `manage-development-environment` skill plus the adaptive-workflow index in `AGENTS.md`; replace or subsume the narrower `manage-mamba-environment` skill after human-reviewed round-up.
 - Validation: The policy has been checked against representative cases: GitHub CLI and mainstream runtimes may qualify for host scope; Node project CLIs stay local; Python libraries use a tracked Mamba environment; niche native binaries use a versioned sidecar or container; and drivers, services, or persistent machine changes require human approval. Forward-test the skill during real dependency additions before promotion.
+
+## EP-003 - Review public copy for human voice and evidence
+
+- Status: `accepted-for-round-up`
+- Source framework: `Adaptive Project Framework` plus explicit human feedback on the project README.
+- Project evidence: The README's technically accurate opening still sounded like generic AI/product copy: category language, an abstract “why” section, and polished claims that could describe many tools. The human asked for a more recognisable voice and a reusable standard for any public-facing prose.
+- Project-local implementation: [`README.md`](../README.md) now leads with the concrete problem, the document/agent workflow, practical capabilities, and explicit non-goals. A personal auto-discovered `write-public-copy` skill captures the reusable review workflow.
+- Proposed enduring change: For public READMEs, websites, release notes, announcements, and product copy, preserve the author's intent and texture while replacing generic category language with concrete audience value, evidence-backed claims, useful limitations, and clear next steps. Test each sentence for specificity, human voice, and whether it could describe ten unrelated AI products.
+- Keep project-specific: Quip/SharePoint comparisons, Markdown Collab's agent workflow, Simpliq's voice, and the current Cursor/Marketplace status belong to this project or its brand context; the skill must not impose them elsewhere.
+- Promotion target: A shared `write-public-copy` skill, subject to human review during round-up.
+- Validation: The skill validated successfully, and this README rewrite removed the generic opening while retaining installation, compatibility, privacy, and release facts. Forward-test on a release note and a non-technical public page before wider promotion.
