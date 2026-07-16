@@ -13,6 +13,7 @@ import {
 const THREAD_HEADER = "CMT:THREAD";
 const THREAD_FOOTER = "/CMT:THREAD";
 const MESSAGE_HEADER = "CMT:MSG";
+const THREAD_ID_RE = /^[0-9A-HJKMNP-TV-Z]{5}$/;
 
 type CommentMatch = {
   start: number;
@@ -23,12 +24,16 @@ type CommentMatch = {
 export function parseThreads(text: string): ParseResult {
   const threads: Thread[] = [];
   const errors: ParseError[] = [];
+  const fencedCodeRanges = findFencedCodeRanges(text);
 
   const headerRe = /<!--\s*CMT:THREAD\b/g;
   let match: RegExpExecArray | null;
 
   while ((match = headerRe.exec(text)) !== null) {
     const headerStart = match.index;
+    if (isOffsetInRanges(headerStart, fencedCodeRanges)) {
+      continue;
+    }
     const headerEnd = findCommentEnd(text, headerStart);
     if (headerEnd === -1) {
       errors.push({
@@ -51,23 +56,29 @@ export function parseThreads(text: string): ParseResult {
     const threadEnd = footerMatch ? footerMatch.end : headerEnd;
     const footer = footerMatch ? footerMatch.footer : undefined;
 
-    const threadErrors = footerMatch
-      ? headerResult.errors
-      : headerResult.errors.concat([
-          {
-            message: "Missing thread end marker.",
-            range: { start: headerStart, end: headerEnd },
-            threadId: header.id || undefined,
-          },
-        ]);
+    const threadErrors = [...headerResult.errors];
+    if (footerMatch) {
+      threadErrors.push(...footerMatch.errors);
+      errors.push(...footerMatch.errors);
+    } else {
+      const error: ParseError = {
+        message: "Missing thread end marker.",
+        range: { start: headerStart, end: headerEnd },
+        threadId: header.id || undefined,
+      };
+      threadErrors.push(error);
+      errors.push(error);
+    }
 
-    const messages = parseThreadMessages(
+    const messageResult = parseThreadMessages(
       text,
       headerEnd,
       footerMatch ? footerMatch.start : threadEnd,
-      header.id,
-      errors
+      header.id
     );
+    const messages = messageResult.messages;
+    threadErrors.push(...messageResult.errors);
+    errors.push(...messageResult.errors);
 
     const pending =
       header.status === "open" &&
@@ -92,6 +103,8 @@ export function parseThreads(text: string): ParseResult {
     headerRe.lastIndex = threadEnd;
   }
 
+  flagDuplicateThreadIds(threads, errors);
+
   return { threads, errors };
 }
 
@@ -109,6 +122,12 @@ function parseThreadHeader(
     errors.push({
       message: "Thread header missing id.",
       range,
+    });
+  } else if (!THREAD_ID_RE.test(id)) {
+    errors.push({
+      message: `Invalid thread id '${id}'; expected 5 Crockford Base32 characters.`,
+      range,
+      threadId: id,
     });
   }
 
@@ -132,10 +151,10 @@ function parseThreadMessages(
   text: string,
   start: number,
   end: number,
-  threadId: string,
-  errors: ParseError[]
-): ThreadMessage[] {
+  threadId: string
+): { messages: ThreadMessage[]; errors: ParseError[] } {
   const messages: ThreadMessage[] = [];
+  const errors: ParseError[] = [];
   const msgRe = /<!--\s*CMT:MSG\b/g;
   msgRe.lastIndex = start;
 
@@ -181,6 +200,18 @@ function parseThreadMessages(
         range: { start: msgStart, end: msgEnd },
         threadId: threadId || undefined,
       });
+    } else if (!THREAD_ID_RE.test(meta.id)) {
+      messageErrors.push({
+        message: `Invalid message id '${meta.id}'; expected 5 Crockford Base32 characters.`,
+        range: { start: msgStart, end: msgEnd },
+        threadId: threadId || undefined,
+      });
+    } else if (threadId && meta.id !== threadId) {
+      messageErrors.push({
+        message: `Message id '${meta.id}' does not match thread id '${threadId}'.`,
+        range: { start: msgStart, end: msgEnd },
+        threadId,
+      });
     }
 
     const role = parseRole(meta.role, messageErrors, {
@@ -205,50 +236,67 @@ function parseThreadMessages(
     msgRe.lastIndex = msgEnd;
   }
 
-  return messages;
+  return { messages, errors };
 }
 
 function findThreadFooter(
   text: string,
   start: number,
   threadId: string
-): { start: number; end: number; footer: ThreadFooter } | null {
+): {
+  start: number;
+  end: number;
+  footer: ThreadFooter;
+  errors: ParseError[];
+} | null {
   const footerRe = /<!--\s*\/CMT:THREAD\b/g;
   footerRe.lastIndex = start;
 
-  let match: RegExpExecArray | null;
-  while ((match = footerRe.exec(text)) !== null) {
-    const footerStart = match.index;
-    const footerEnd = findCommentEnd(text, footerStart);
-    if (footerEnd === -1) {
-      return null;
-    }
-
-    const raw = text.slice(footerStart, footerEnd);
-    const inner = extractCommentInner(raw);
-    const line = inner.split(/\r?\n/)[0] || "";
-    const footerErrors: ParseError[] = [];
-    const meta = parseMetaLine(line, THREAD_FOOTER, footerErrors, {
-      start: footerStart,
-      end: footerEnd,
-    });
-    const id = meta.id;
-
-    if (!threadId || !id || id === threadId) {
-      return {
-        start: footerStart,
-        end: footerEnd,
-        footer: {
-          id,
-          raw,
-          range: { start: footerStart, end: footerEnd },
-          meta,
-        },
-      };
-    }
+  const match = footerRe.exec(text);
+  if (!match) {
+    return null;
   }
 
-  return null;
+  const footerStart = match.index;
+  const footerEnd = findCommentEnd(text, footerStart);
+  if (footerEnd === -1) {
+    return null;
+  }
+
+  const range = { start: footerStart, end: footerEnd };
+  const raw = text.slice(footerStart, footerEnd);
+  const inner = extractCommentInner(raw);
+  const line = inner.split(/\r?\n/)[0] || "";
+  const footerErrors: ParseError[] = [];
+  const meta = parseMetaLine(line, THREAD_FOOTER, footerErrors, range);
+  const id = meta.id;
+
+  if (!id) {
+    footerErrors.push({
+      message: "Thread end marker missing id.",
+      range,
+      threadId: threadId || undefined,
+    });
+  } else if (!THREAD_ID_RE.test(id)) {
+    footerErrors.push({
+      message: `Invalid thread end marker id '${id}'.`,
+      range,
+      threadId: threadId || undefined,
+    });
+  } else if (threadId && id !== threadId) {
+    footerErrors.push({
+      message: `Thread end marker id '${id}' does not match thread id '${threadId}'.`,
+      range,
+      threadId,
+    });
+  }
+
+  return {
+    start: footerStart,
+    end: footerEnd,
+    footer: { id, raw, range, meta },
+    errors: footerErrors,
+  };
 }
 
 function parseMetaLine(
@@ -348,11 +396,12 @@ function parseRef(
   if (value === "file") {
     return { type: "file" };
   }
+  const prevMatch = value.match(/^prev=([1-9]\d*)$/);
+  if (prevMatch) {
+    const count = Number.parseInt(prevMatch[1], 10);
+    return { type: "prev", count };
+  }
   if (value.startsWith("prev=")) {
-    const count = Number.parseInt(value.slice("prev=".length), 10);
-    if (!Number.isNaN(count) && count > 0) {
-      return { type: "prev", count };
-    }
     errors.push({
       message: `Invalid ref '${value}'.`,
       range,
@@ -385,4 +434,75 @@ function findCommentEnd(text: string, start: number): number {
 
 function unescapeCommentBody(body: string): string {
   return body.replace(/&lt;!--/g, "<!--").replace(/--&gt;/g, "-->");
+}
+
+function flagDuplicateThreadIds(
+  threads: Thread[],
+  errors: ParseError[]
+): void {
+  const firstById = new Map<string, Thread>();
+  for (const thread of threads) {
+    if (!thread.id) {
+      continue;
+    }
+    const first = firstById.get(thread.id);
+    if (!first) {
+      firstById.set(thread.id, thread);
+      continue;
+    }
+
+    const error: ParseError = {
+      message: `Duplicate thread id '${thread.id}'.`,
+      range: thread.header.range,
+      threadId: thread.id,
+    };
+    errors.push(error);
+    first.errors = [...(first.errors ?? []), error];
+    thread.errors = [...(thread.errors ?? []), error];
+  }
+}
+
+function findFencedCodeRanges(text: string): Array<{ start: number; end: number }> {
+  const ranges: Array<{ start: number; end: number }> = [];
+  const lineRe = /[^\r\n]*(?:\r\n|\n|$)/g;
+  let active: { marker: "`" | "~"; length: number; start: number } | null = null;
+  let match: RegExpExecArray | null;
+
+  while ((match = lineRe.exec(text)) !== null) {
+    const rawLine = match[0];
+    if (rawLine.length === 0) {
+      break;
+    }
+    const line = rawLine.replace(/\r?\n$/, "");
+    const fence = line.match(/^ {0,3}(`{3,}|~{3,})/);
+    if (!active && fence) {
+      active = {
+        marker: fence[1][0] as "`" | "~",
+        length: fence[1].length,
+        start: match.index,
+      };
+      continue;
+    }
+    if (active) {
+      const closeRe = new RegExp(
+        `^ {0,3}${active.marker === "`" ? "`" : "~"}{${active.length},}\\s*$`
+      );
+      if (closeRe.test(line)) {
+        ranges.push({ start: active.start, end: match.index + rawLine.length });
+        active = null;
+      }
+    }
+  }
+
+  if (active) {
+    ranges.push({ start: active.start, end: text.length });
+  }
+  return ranges;
+}
+
+function isOffsetInRanges(
+  offset: number,
+  ranges: Array<{ start: number; end: number }>
+): boolean {
+  return ranges.some((range) => offset >= range.start && offset < range.end);
 }

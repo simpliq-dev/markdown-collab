@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Development Environment"
+  short_description: "Keep host installs clean and dependencies isolated"
+  default_prompt: "Use $manage-development-environment to choose a safe, reproducible scope for this development dependency."

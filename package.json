@@ -1,8 +1,8 @@
 {
   "name": "codex-collab",
-  "displayName": "codex-collab",
-  "description": "In-file threaded chat for Markdown.",
-  "version": "0.0.8",
+  "displayName": "Markdown Collab",
+  "description": "Document-first threaded conversations stored inside Markdown.",
+  "version": "0.0.10",
   "publisher": "simpliq",
   "author": "Simpliq",
   "license": "MIT",
@@ -35,47 +35,68 @@
   },
   "activationEvents": [
     "onLanguage:markdown",
-    "onView:codexCollab.threadsView",
-    "onCommand:codexCollab.refreshThreads"
+    "onCustomEditor:codexCollab.reviewEditor",
+    "onCommand:codexCollab.openReview"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "views": {
-      "explorer": [
-        {
-          "id": "codexCollab.threadsView",
-          "name": "Threads",
-          "type": "webview"
-        }
-      ]
-    },
+    "customEditors": [
+      {
+        "viewType": "codexCollab.reviewEditor",
+        "displayName": "Markdown Collab Review",
+        "selector": [
+          {
+            "filenamePattern": "*.md"
+          },
+          {
+            "filenamePattern": "*.markdown"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
     "commands": [
       {
-        "command": "codexCollab.refreshThreads",
-        "title": "Codex Collab: Refresh Threads"
+        "command": "codexCollab.openReview",
+        "title": "Open Collaborative Review",
+        "category": "Markdown Collab",
+        "icon": "$(comment-discussion)"
       }
     ],
     "menus": {
-      "view/title": [
+      "editor/title": [
         {
-          "command": "codexCollab.refreshThreads",
-          "when": "view == codexCollab.threadsView",
-          "group": "navigation"
+          "command": "codexCollab.openReview",
+          "when": "editorLangId == markdown",
+          "group": "navigation@10"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "codexCollab.openReview",
+          "when": "editorLangId == markdown",
+          "group": "navigation@10"
         }
       ]
     }
   },
   "scripts": {
     "build": "node ./node_modules/typescript/bin/tsc -p .",
+    "test": "node ./node_modules/typescript/bin/tsc -p . && node --test tests/core.test.js",
     "watch": "node ./node_modules/typescript/bin/tsc -w -p .",
     "vscode:prepublish": "npm run build",
     "package": "node ./node_modules/@vscode/vsce/vsce package --no-rewrite-relative-links",
+    "test-kit": "npm run package && node scripts/build-test-kit.mjs",
     "publish": "node ./node_modules/@vscode/vsce/vsce publish"
   },
   "devDependencies": {
+    "@types/markdown-it": "14.1.2",
     "@types/node": "^20.10.0",
     "@types/vscode": "^1.88.0",
-    "@vscode/vsce": "^2.26.0",
+    "@vscode/vsce": "3.9.2",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "markdown-it": "14.3.0"
   }
 }

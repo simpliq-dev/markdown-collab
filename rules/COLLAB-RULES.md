@@ -1,17 +1,15 @@
-# COLLAB-RULES.md — codex-collab agent rules (normative)
+# COLLAB-RULES.md — Markdown Collab agent rules (normative)
 
-This file defines the **codex-collab** read/respond rules for a *file-backed* collaboration workflow where conversations live **inside Markdown files** as HTML comment blocks.
+This file defines the **Markdown Collab** read/respond rules for a *file-backed* collaboration workflow where conversations live **inside Markdown files** as HTML comment blocks.
 
-Primary target: **OpenAI Codex** (because this is a VS Code extension called `codex-collab`).
+It works with Codex, Claude, and other agentic systems that can read and write files reliably.
 
-It will also work with other agentic systems **as long as they can read and write files** reliably.
+## Quick start (what to do when comments are ready)
 
-## Quick start (what to do when asked to “run Codex”)
-
-codex-collab treats each `CMT:THREAD` block as a **mini chat session embedded in Markdown**.
+Markdown Collab treats each `CMT:THREAD` block as a **mini chat session embedded in Markdown**.
 
 When a human says something like:
-- “Run Codex” / “respond to threads” / “process pending threads”
+- “comments are ready” / “respond to threads” / “process pending threads”
 
 Do this:
 
@@ -28,7 +26,7 @@ Do this:
 ## 0) Core principles (non‑negotiables)
 
 - **File-backed only**: the Markdown file is the source of truth. No hidden state.
-- **Human uses UI; agent edits files**: the human uses the VS Code UI; the agent’s output is direct edits to the Markdown file.
+- **Human uses UI; agent edits files**: the human uses the editor UI; the agent’s output is direct edits to the Markdown file.
 - **Minimise churn**: smallest edits needed; do not reformat unrelated content.
 - **Don’t guess**: if required context is missing, ask clarifying questions.
 - **Safety**: never introduce or echo secrets/tokens; redact if detected.
@@ -119,7 +117,7 @@ If fewer than `N` blocks exist before the anchor, use all available preceding bl
 
 ### 4.1 Default behaviour
 
-When asked to “run Codex” / “respond” / “process threads”, do:
+When asked to “review comments” / “respond” / “process threads”, do:
 
 1) Parse the Markdown file to find all `CMT:THREAD` blocks.
 2) Determine pending threads per Section 2.
@@ -142,7 +140,7 @@ When asked to “run Codex” / “respond” / “process threads”, do:
 
 ## 5) Single-threaded prompt (important)
 
-Even though the extension supports **many threads**, most agent systems (including Codex) work best when you drive them with a **single serial instruction**.
+Even though the extension supports **many threads**, agent systems work best when you drive them with a **single serial instruction**.
 
 Recommended prompt pattern:
 

@@ -5,6 +5,8 @@
 src/**
 tests/**
 docs/**
+scripts/**
+release/**
 templates/**
 rules/**
 archive/**
@@ -12,9 +14,12 @@ archive/**
 **/*.ts
 **/*.tsbuildinfo
 
-node_modules/**
+.agents/**
+agent-guidance/**
+imgs/01-threads-view_1600.png
 
 AGENTS.md
+CLAUDE.md
 
 tsconfig.json
 .gitignore

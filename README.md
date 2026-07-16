@@ -1,118 +1,118 @@
-# codex-collab
+<p align="right">
+  <a href="https://simpliq.io"><img src="imgs/simpliq-icon-128.png" alt="Simpliq" width="64"></a>
+</p>
 
-File-backed, in-document threaded chat for Markdown, implemented as a VS Code extension.
+# Markdown Collab
 
-The key idea is simple:
-- Humans use the **Threads** sidebar UI to read and author messages.
-- The “agent” (Codex) **edits the Markdown file directly** by reading/writing thread blocks.
-- No external services and no API calls: the UI is a view over what’s already in the file.
+Document-first, threaded collaboration for Markdown in VS Code-compatible editors.
 
-![Threads view](imgs/01-threads-view_1600.png)
+Markdown Collab turns an ordinary `.md` file into a focused review surface: readable Markdown, anchored conversations, several independent drafts, and explicit control over when comments are ready for an agent. The document and its discussion remain together in one portable file.
 
-## Features (current)
+Built by [Simpliq](https://simpliq.io).
 
-- Explorer sidebar **Threads** view for the active Markdown file
-- Create a new thread at the current paragraph
-- Expand/collapse threads (including Expand all / Collapse all)
-- Full message history rendering (chat-like layout)
-- Draft + submit flow (drafts are editable; submit creates the “human” message)
-- Pending inference (when last role is `H`)
-- Close / re-open thread (`status=open|closed`)
-- Jump-to-anchor and re-anchor
-- Filters: status (All/Open/Pending/Closed) and stage (All/Draft/Human/Agent) based on the **last** message role
+**[Download from GitHub Releases](https://github.com/simpliq-dev/codex-collab/releases)** · [How it works](#how-it-works) · [Privacy and trust](#privacy-and-trust)
 
-## Install
+![Markdown Collab showing a rendered document, anchored thread markers, and a contextual conversation rail](imgs/markdown-collab-review.png)
 
-VS Code Marketplace:
-- Publisher page: https://marketplace.visualstudio.com/publishers/simpliq
-- In VS Code: Extensions → search **codex-collab** → Install
+## Why Markdown Collab?
+
+Normal agent chat is serial, while serious document work rarely is. Markdown Collab lets you open several discussions around different parts of a document, develop them independently, and then ask your existing agent conversation to handle the submitted comments together.
+
+- Rendered Markdown with comments anchored beside the relevant text
+- Full multi-turn human/agent conversations, not disposable notes
+- Independent unsaved composers and file-backed drafts for every thread
+- Explicit **Submit turn** action—changing focus never submits
+- **N comments ready** status and one-click handoff prompt copying
+- Resolve, reopen, re-anchor, delete one conversation, or delete all with confirmation
+- No hosted service, account, thread database, telemetry, or model API
+- Agent-neutral workflow for Codex, Claude, and other file-editing agents
 
 ## Quick start
 
-1) Open any Markdown file (`.md`).
-2) Open the **Explorer → Threads** view.
-3) Place your cursor in a paragraph and create a thread.
-4) Write messages in the thread; they’re stored directly in the file.
+1. Download the newest VSIX or complete `.tar.gz` test kit from [Releases](https://github.com/simpliq-dev/codex-collab/releases).
+2. In VS Code or Cursor, run **Extensions: Install from VSIX...** and choose the downloaded `.vsix`.
+3. Copy the supplied `AGENTS.md` or `CLAUDE.md` into the root of the project containing your Markdown files. If one already exists, merge in the Markdown Collab section.
+4. Open a `.md` file and run **Markdown Collab: Open Collaborative Review** from the Command Palette, editor title icon, or editor context menu.
+5. Hover a rendered block and choose **Start conversation**.
 
-## Use with Codex (recommended)
+## How it works
 
-This extension is designed primarily for **OpenAI Codex** (and also works with other agentic systems that can read/write files).
+1. Write comments in as many anchored conversations as you need. Each composer keeps its own unfinished text.
+2. Use **Save draft** for a non-actionable note or **Submit turn** (`Ctrl+Enter`) when the comment is ready.
+3. When one or more conversations are waiting, choose **Copy prompt** beside **N comments ready**.
+4. Paste that short prompt into your existing agent conversation and send it once.
+5. The agent reads all ready comments together, edits the document where appropriate, and appends a response to every handled thread.
 
-To make Codex reliably read/respond to the threaded conversations, copy the agent rules into your repo:
+Nothing is sent automatically. You choose which comments to submit and when to hand them to the agent.
 
-- Install guide: [`docs/install-agent-rules.md`](./docs/install-agent-rules.md)
-- Rules:
-  - [`rules/COLLAB-RULES.md`](./rules/COLLAB-RULES.md)
-  - [`rules/AGENTS_addendum.md`](./rules/AGENTS_addendum.md)
+## Agent setup
 
-Important limitation: while the UI supports multiple threads, you typically still drive Codex with a **single serial prompt**, e.g.:
+The release test kit includes standalone guidance files:
 
-> “Open `my-file.md`. Respond to each pending codex-collab thread (status=open, last role=H) by appending one role=A message per thread.”
+- [`AGENTS.md`](agent-guidance/AGENTS.md) for Codex and other AGENTS.md-aware agents
+- [`CLAUDE.md`](agent-guidance/CLAUDE.md) for Claude
 
-## Thread block format (MVP)
+See [Install agent guidance](docs/install-agent-rules.md) for merge instructions. The complete portable grammar is documented in [`COLLAB-RULES.md`](rules/COLLAB-RULES.md).
 
-Threads are represented as HTML comment blocks inside Markdown.
+## One file, including the conversations
 
-Example (simplified):
+Submitted discussion is stored as HTML comments, so normal Markdown renderers hide it while the source remains readable and version-controllable:
 
 ```md
 <!-- CMT:THREAD id=ABCDE status=open ref=prev=1 -->
-<!-- CMT:MSG id=ABCDE role=H ts=2026-01-18T12:00:00.000Z
-Hello from the human.
+<!-- CMT:MSG id=ABCDE role=H ts=2026-07-16T12:00:00.000Z
+Please pressure-test this claim.
 -->
-<!-- CMT:MSG id=ABCDE role=A ts=2026-01-18T12:01:00.000Z
-Hello from the agent.
+<!-- CMT:MSG id=ABCDE role=A ts=2026-07-16T12:01:00.000Z
+The claim needs a narrower scope and a supporting source.
 -->
 <!-- /CMT:THREAD id=ABCDE -->
 ```
 
-Notes:
-- `status` is **human-owned** and only `open|closed`.
-- “Pending” is inferred (last message role is `H`).
-- Message bodies escape `<!--` and `-->` to keep the comment structure valid.
-- `ref=prev=N` anchors a thread to the prior N Markdown blocks (default `prev=1` if missing). `ref=file` targets the whole file.
+The native Markdown source editor remains available at any time. Collaborative Review is an opt-in view over the same file, not a conversion or separate document.
 
-## Privacy
+## Compatibility
 
-codex-collab does not send telemetry and does not contact external services.
-See: [PRIVACY.md](./PRIVACY.md)
+- **VS Code:** current test target; packaged VSIX installation is validated.
+- **Cursor:** designed around stable VS Code extension APIs and installable from VSIX, but not yet exercised locally by the maintainers.
+- **Agents:** works with Codex, Claude, or another agent that can follow repository instructions and edit files.
 
-## Develop / run locally
+The published technical extension ID remains `simpliq.codex-collab` for update compatibility; the product name is Markdown Collab.
 
-Prereqs:
-- VS Code
-- Node.js + npm
+## Privacy and trust
 
-Install deps:
+Markdown Collab does not contact an external service, send telemetry, invoke a model, or maintain a separate conversation database. Workspace content is treated as untrusted: raw HTML is disabled in the review renderer, remote images are not loaded automatically, external links require a click, and the Webview uses a restrictive content security policy. See [`PRIVACY.md`](PRIVACY.md).
+
+## Develop locally
+
+Prerequisites: VS Code, Node.js, and npm.
 
 ```sh
 npm install
+npm test
 ```
 
-Build:
+Open this repository in VS Code and press `F5` to launch an **Extension Development Host**. In that new window, open `tests/review_showcase.md` and run **Markdown Collab: Open Collaborative Review**.
+
+Useful commands:
 
 ```sh
-npm run build
+npm run build      # compile TypeScript
+npm run test       # build and run regression tests
+npm run package    # create a VSIX
+npm run test-kit   # create the portable release folder
 ```
 
-Run in the Extension Development Host:
-- Open this repo in VS Code
-- Press `F5` (Run → Start Debugging)
-- In the new VS Code window, open any `.md` file and check **Explorer → Threads**
+Tagged builds run the test suite and publish a VSIX plus a complete `.tar.gz` test kit through [GitHub Releases](https://github.com/simpliq-dev/codex-collab/releases). Maintainer details are in [`docs/publish.md`](docs/publish.md).
 
-### SMB shares / symlink errors
+## Project status
 
-If you’re working on an SMB share that doesn’t support symlinks, npm may fail when creating `node_modules/.bin/*`.
-This repo includes `.npmrc` with `bin-links=false` to avoid those symlinks.
+Markdown Collab is currently distributed as a public test build for direct repository users rather than through the VS Code Marketplace. VS Code behavior is validated; broader Cursor testing remains welcome. Issues and focused feedback can be shared through the repository's [issue tracker](https://github.com/simpliq-dev/codex-collab/issues).
 
-## Publishing
+## About Simpliq
 
-See: [`docs/publish.md`](./docs/publish.md)
+[Simpliq](https://simpliq.io) builds practical tools and workflows that make complex knowledge work simpler.
 
-## Repo layout
+## License
 
-- `src/extension.ts`: VS Code extension + webview UI
-- `src/core/`: parser/serializer for thread blocks
-- `tests/`: manual Markdown samples for exercising the UI
-- `docs/`: PRFAQ/PRD and ideation transcript
-
+[MIT](LICENSE)
