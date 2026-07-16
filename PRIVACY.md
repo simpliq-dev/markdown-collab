@@ -16,4 +16,4 @@ All thread content is stored **locally**, inside the Markdown files you edit (as
 ## Support
 
 If you believe this extension is behaving unexpectedly, please file an issue:
-- https://github.com/simpliq-dev/codex-collab/issues
+- https://github.com/simpliq-dev/markdown-collab/issues

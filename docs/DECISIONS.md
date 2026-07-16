@@ -50,7 +50,7 @@
 
 ## 2026-07-16 - Use Markdown Collab as the provider-neutral product brand
 
-**Decision:** Use **Markdown Collab** in the extension UI, commands, documentation, privacy language, and agent guidance. Keep the existing `codex-collab` package name, repository URL, and `codexCollab.*` contribution IDs as legacy technical identifiers for update and keybinding compatibility.
+**Decision:** Use **Markdown Collab** in the extension UI, commands, documentation, privacy language, and agent guidance. Keep the existing `codex-collab` package name and `codexCollab.*` contribution IDs as legacy technical identifiers for update and keybinding compatibility; use the renamed `markdown-collab` repository URL for active links.
 
 **Why:** The file format and workflow support VS Code and Cursor as editors and Codex, Claude, or another file-editing agent. A provider-specific brand understates that scope, while changing published extension identity would create an avoidable migration break.
 

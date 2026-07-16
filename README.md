@@ -10,7 +10,7 @@ Markdown Collab turns an ordinary `.md` file into a focused review surface: read
 
 Built by [Simpliq](https://simpliq.io).
 
-**[Download from GitHub Releases](https://github.com/simpliq-dev/codex-collab/releases)** · [How it works](#how-it-works) · [Privacy and trust](#privacy-and-trust)
+**[Download from GitHub Releases](https://github.com/simpliq-dev/markdown-collab/releases)** · [How it works](#how-it-works) · [Privacy and trust](#privacy-and-trust)
 
 ![Markdown Collab showing a rendered document, anchored thread markers, and a contextual conversation rail](imgs/markdown-collab-review.png)
 
@@ -29,7 +29,7 @@ Normal agent chat is serial, while serious document work rarely is. Markdown Col
 
 ## Quick start
 
-1. Download the newest VSIX or complete `.tar.gz` test kit from [Releases](https://github.com/simpliq-dev/codex-collab/releases).
+1. Download the newest VSIX or complete `.tar.gz` test kit from [Releases](https://github.com/simpliq-dev/markdown-collab/releases).
 2. In VS Code or Cursor, run **Extensions: Install from VSIX...** and choose the downloaded `.vsix`.
 3. Copy the supplied `AGENTS.md` or `CLAUDE.md` into the root of the project containing your Markdown files. If one already exists, merge in the Markdown Collab section.
 4. Open a `.md` file and run **Markdown Collab: Open Collaborative Review** from the Command Palette, editor title icon, or editor context menu.
@@ -103,11 +103,11 @@ npm run package    # create a VSIX
 npm run test-kit   # create the portable release folder
 ```
 
-Tagged builds run the test suite and publish a VSIX plus a complete `.tar.gz` test kit through [GitHub Releases](https://github.com/simpliq-dev/codex-collab/releases). Maintainer details are in [`docs/publish.md`](docs/publish.md).
+Tagged builds run the test suite and publish a VSIX plus a complete `.tar.gz` test kit through [GitHub Releases](https://github.com/simpliq-dev/markdown-collab/releases). Maintainer details are in [`docs/publish.md`](docs/publish.md).
 
 ## Project status
 
-Markdown Collab is currently distributed as a public test build for direct repository users rather than through the VS Code Marketplace. VS Code behavior is validated; broader Cursor testing remains welcome. Issues and focused feedback can be shared through the repository's [issue tracker](https://github.com/simpliq-dev/codex-collab/issues).
+Markdown Collab is currently distributed as a public test build for direct repository users rather than through the VS Code Marketplace. VS Code behavior is validated; broader Cursor testing remains welcome. Issues and focused feedback can be shared through the repository's [issue tracker](https://github.com/simpliq-dev/markdown-collab/issues).
 
 ## About Simpliq
 
