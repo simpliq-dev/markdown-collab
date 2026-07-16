@@ -4,15 +4,15 @@
 
 # Markdown Collab
 
-LLMs are excellent thought partners for writing, from code and technical documents to essays and poetry. Markdown gives the writer and the LLM the same plain-text document, with headings, lists, and other structure left visible.
+The usual setup for writing a technical document with an LLM is a Markdown file open in VS Code and a chat beside it. You ask for a section, make a few changes, and carry on.
 
-What Markdown does not provide is a natural way to collaborate. Once a document grows beyond a few paragraphs, review in a chat becomes a trail of directions: “paragraph three”, “the sentence that begins…”, “back in the section above”. Context drifts away from the text it belongs to, and several discussions quickly become hard to manage.
+It gets harder as the document grows. You might be tightening one paragraph, questioning an assumption somewhere else, and leaving another point for later. Chat gives those discussions nowhere to live. Before long you are referring to “the paragraph under…” or pasting parts of the document back into the prompt.
 
-Markdown Collab adds threaded collaboration to that document. It is a VS Code-compatible extension that lets you work with an LLM in much the same way you would with a colleague in Quip or SharePoint.
+Markdown Collab is a VS Code-compatible extension that adds threaded conversations to the Markdown file, a bit like comments in Quip or SharePoint. Each thread sits beside the passage it belongs to, and several discussions can stay open at once.
 
-Open a threaded conversation beside any passage, keep several discussions moving at once, and choose when to send a group of comments to your existing Codex, Claude, or other agent chat. The LLM can consider the comments together, edit the document, and respond in each thread without losing the wider context.
+When comments are ready, Markdown Collab gives you one short prompt to paste into your existing Codex, Claude, or other agent chat. With the supplied project guidance, the agent can handle them together, edit the document, and reply in the relevant threads.
 
-The document stays at the centre of the work. Its conversations are stored as hidden HTML comments inside the Markdown file, so the writing, questions, decisions, and responses travel together. There is no hosted discussion service or separate thread database. Markdown Collab prepares the handoff, but it never sends a prompt or connects to a model.
+The file remains Markdown. Conversations are stored inside it as hidden HTML comments. There is no hosted discussion service or separate thread database, and Markdown Collab never sends a prompt or connects to a model.
 
 Built by [Simpliq](https://simpliq.io).
 
