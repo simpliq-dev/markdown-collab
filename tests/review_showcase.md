@@ -4,6 +4,8 @@
 
 Strategy documents often begin as coherent prose and then fragment across chat windows, review tools, and copied prompts. The document stops being the shared object, and important reasoning becomes difficult to recover or revisit.
 
+This brief describes that cost qualitatively; it does not claim a measured impact.
+
 <!-- CMT:THREAD id=N7C4R status=open ref=prev=1 -->
 <!-- CMT:MSG id=N7C4R role=H ts=2026-07-14T09:30:00.000Z
 This is directionally right, but can we make the cost more concrete without inventing a metric?
@@ -11,13 +13,19 @@ This is directionally right, but can we make the cost more concrete without inve
 <!-- CMT:MSG id=N7C4R role=A ts=2026-07-14T09:34:00.000Z
 Yes. Frame the cost as lost decision context and repeated reconciliation work; both are observable without claiming a number we cannot support.
 -->
+<!-- CMT:MSG id=N7C4R role=H ts=2026-07-15T22:05:25.084Z
+Can you add an extra line as a disclaimer at the end
+-->
+<!-- CMT:MSG id=N7C4R role=A ts=2026-07-16T06:25:16.128Z
+Added a one-line disclaimer clarifying that the cost is qualitative rather than measured.
+-->
 <!-- /CMT:THREAD id=N7C4R -->
 
 ## Product principle
 
 Keep the document whole. Discussion should remain anchored to the text it is trying to improve, while every participant retains control over when an unfinished thought becomes a submitted turn.
 
-<!-- CMT:THREAD id=Q9T2V status=open ref=prev=1 -->
+<!-- CMT:THREAD id=Q9T2V status=closed ref=prev=1-->
 <!-- CMT:MSG id=Q9T2V role=H ts=2026-07-14T10:05:00.000Z
 Pressure-test “every participant.” Our first real workflow is one human and one file-editing agent, not live multi-user collaboration.
 -->
@@ -25,11 +33,14 @@ Pressure-test “every participant.” Our first real workflow is one human and 
 
 ## Experience
 
-The primary view should feel like reading and discussing one calm document: rendered Markdown in the centre, quiet conversation markers beside relevant passages, and a focused thread rail that can hold a substantial exchange without obscuring the prose.
+The primary view should feel like reading and discussing one calm document: rendered Markdown in the centre, quiet conversation markers beside relevant passages, and a focused thread rail that can hold a substantial exchange without obscuring the prose. A small, passive indicator in the rail can show how many other prompts remain unfinished, without expanding them or introducing dashboard-like controls.
 
 <!-- CMT:THREAD id=H4M8K status=open ref=prev=1 -->
-<!-- CMT:MSG id=H4M8K role=D ts=2026-07-14T10:22:00.000Z
+<!-- CMT:MSG id=H4M8K role=H ts=2026-07-15T22:06:28.539Z
 Could the rail also show that two other prompts are unfinished, without turning back into a dashboard?
+-->
+<!-- CMT:MSG id=H4M8K role=A ts=2026-07-16T06:25:16.128Z
+Yes. Added a passive unfinished-prompt indicator that preserves focus and avoids dashboard controls.
 -->
 <!-- /CMT:THREAD id=H4M8K -->
 
@@ -48,4 +59,16 @@ Added “native source editor remains” and kept the custom editor contribution
 
 ## First success signal
 
-A user can keep three meaningful discussions moving at different stages, understand exactly which passage each belongs to, and submit one prompt without disturbing the others.
+A user can keep three meaningful discussions moving at different stages, understand exactly which passage each belongs to, and submit one prompt without disturbing the others. At a glance, they can distinguish an unfinished draft, a submitted prompt awaiting a response, and a completed exchange; opening any one discussion reveals its passage and history while preserving the state of the other two.
+
+<!-- CMT:THREAD id=P62PM status=open ref=prev=1 -->
+<!-- CMT:MSG id=P62PM role=H ts=2026-07-16T06:23:08.487Z
+Can you flesh this out some please.
+-->
+<!-- CMT:MSG id=P62PM role=A ts=2026-07-16T06:25:16.128Z
+Expanded the signal with observable states and the expected behavior when moving among discussions.
+-->
+<!-- CMT:MSG id=P62PM role=H ts=2026-07-16T06:44:30.078Z
+Blah
+-->
+<!-- /CMT:THREAD id=P62PM -->
