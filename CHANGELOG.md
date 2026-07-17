@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.0.12] - 2026-07-17
+
+### Changed
+
+- Replaced separate `AGENTS.md` and `CLAUDE.md` setup files with one portable `markdown-collab` Agent Skill.
+- Updated copied handoff prompts to invoke the skill explicitly and remind the agent that conversations may only be deleted on an explicit human request.
+- Updated release kits to include the skill and tagged releases to publish a standalone skill archive.
+
+### Fixed
+
+- Added a required preservation check so an agent must verify that every existing thread and message survives document edits.
+
 ## [0.0.11] - 2026-07-16
 
 ### Changed

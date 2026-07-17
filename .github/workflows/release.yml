@@ -37,10 +37,13 @@ jobs:
           VERSION="$(node -p "require('./package.json').version")"
           KIT="markdown-collab-${VERSION}-kit"
           ARCHIVE="markdown-collab-${VERSION}.tar.gz"
+          SKILL_ARCHIVE="markdown-collab-skill-${VERSION}.tar.gz"
           (cd release && tar -czf "${ARCHIVE}" "${KIT}")
+          tar -czf "release/${SKILL_ARCHIVE}" -C "release/${KIT}/skills" markdown-collab
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "kit=${KIT}" >> "$GITHUB_OUTPUT"
           echo "archive=${ARCHIVE}" >> "$GITHUB_OUTPUT"
+          echo "skill_archive=${SKILL_ARCHIVE}" >> "$GITHUB_OUTPUT"
 
       - name: Publish release assets
         env:
@@ -49,6 +52,7 @@ jobs:
           VERSION: ${{ steps.kit.outputs.version }}
           KIT: ${{ steps.kit.outputs.kit }}
           ARCHIVE: ${{ steps.kit.outputs.archive }}
+          SKILL_ARCHIVE: ${{ steps.kit.outputs.skill_archive }}
         shell: bash
         run: |
           PRERELEASE=()
@@ -57,16 +61,15 @@ jobs:
           fi
 
           TITLE="Markdown Collab ${VERSION}"
-          NOTES="Install the VSIX directly, or download the complete release kit. Standalone AGENTS.md and CLAUDE.md guidance files are also attached for quick project setup."
+          NOTES="Install the VSIX directly, or download the complete release kit. The portable Markdown Collab Agent Skill is also attached separately for project setup."
           VSIX="release/${KIT}/markdown-collab-${VERSION}.vsix"
           ARCHIVE="release/${ARCHIVE}"
-          AGENTS="release/${KIT}/AGENTS.md"
-          CLAUDE="release/${KIT}/CLAUDE.md"
+          SKILL="release/${SKILL_ARCHIVE}"
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" "$VSIX" "$ARCHIVE" "$AGENTS" "$CLAUDE" --clobber
+            gh release upload "$TAG" "$VSIX" "$ARCHIVE" "$SKILL" --clobber
           else
-            gh release create "$TAG" "$VSIX" "$ARCHIVE" "$AGENTS" "$CLAUDE" \
+            gh release create "$TAG" "$VSIX" "$ARCHIVE" "$SKILL" \
               --verify-tag \
               --title "$TITLE" \
               --notes "$NOTES" \

@@ -5,8 +5,7 @@ This folder contains everything needed to install and use Markdown Collab on ano
 ## Contents
 
 - `{{VSIX_NAME}}` — the VS Code-compatible extension package.
-- `AGENTS.md` — standalone instructions for Codex and other AGENTS.md-aware agents.
-- `CLAUDE.md` — standalone instructions for Claude.
+- `skills/markdown-collab/` — one portable Agent Skill for Codex, Cursor, Claude Code, and other Agent Skills clients.
 - `SHA256SUMS.txt` — checksum for verifying the VSIX after transfer.
 
 The extension's published technical ID remains `simpliq.codex-collab` for update compatibility; the user-facing product is Markdown Collab.
@@ -24,14 +23,15 @@ The extension's published technical ID remains `simpliq.codex-collab` for update
 
 Use the same **Extensions: Install from VSIX...** command. Cursor compatibility is expected because Markdown Collab uses stable VS Code extension APIs, but this build has not yet been exercised in Cursor.
 
-## Install the agent guidance
+## Install the agent skill
 
-Copy one file into the root of the Markdown project you want to review:
+Copy the complete `skills/markdown-collab` folder, without editing its contents, into the project skill directory used by your agent:
 
-- Use `AGENTS.md` for Codex or another AGENTS.md-aware agent.
-- Use `CLAUDE.md` for Claude.
+- Codex or Cursor: `.agents/skills/markdown-collab/`
+- Claude Code: `.claude/skills/markdown-collab/`
+- Other Agent Skills clients: the project skill directory documented by that client.
 
-If the project already has a file with that name, merge the Markdown Collab section into it rather than replacing existing project instructions.
+Leave any existing `AGENTS.md`, `CLAUDE.md`, rules, and other skills unchanged. Open a new agent conversation after installing if the client does not refresh its skill list immediately.
 
 ## Try the workflow
 
@@ -42,7 +42,8 @@ If the project already has a file with that name, merge the Markdown Collab sect
 5. Confirm that deleting one conversation and deleting all conversations each require a separate warning confirmation; cancel the warning to preserve the document.
 6. Choose **Copy prompt** beside **N comments ready**.
 7. Paste the copied sentence into the existing agent conversation and send it once.
-8. Confirm the agent processes all ready comments together and appends one response to each handled thread.
+8. Confirm the copied prompt explicitly invokes the `markdown-collab` skill.
+9. Confirm the agent processes all ready comments together, appends one response to each handled thread, and preserves every existing conversation unless you explicitly request deletion.
 
 ## Verify the package
 
@@ -60,4 +61,4 @@ Get-FileHash -Algorithm SHA256 .\{{VSIX_NAME}}
 
 ## Remove the release
 
-Open Extensions, find **Markdown Collab**, and choose **Uninstall**. All conversations remain in the Markdown files as HTML comments.
+Open Extensions, find **Markdown Collab**, and choose **Uninstall**. All conversations remain in the Markdown files as HTML comments. Remove the installed `markdown-collab` skill folder separately if it is no longer needed.

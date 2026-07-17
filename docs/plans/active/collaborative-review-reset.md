@@ -14,7 +14,7 @@ Deliver the opt-in **Markdown Collab** review editor in which rendered prose and
 - An all-thread activity view supports document-wide navigation without duplicating the full conversation UI.
 - Source Markdown opens beside review mode without conversion or data loss.
 - External file edits refresh the review surface without losing unrelated local composers.
-- The top bar exposes **N comments ready** and copies one prompt for processing those comments together in the human's existing agent conversation.
+- The top bar exposes **N comments ready** and copies one prompt that invokes the `markdown-collab` skill, processes those comments together, and preserves all conversation history unless deletion is explicitly requested.
 
 ## Implementation slices
 
@@ -52,7 +52,7 @@ Acceptance:
 - [x] Count open threads awaiting an agent response as ready comments.
 - [x] Add a host-backed clipboard action with singular/plural prompt text and malformed-document protection.
 - [x] Confirm a successful copy with a short-lived **Copied ✓** label and restrained pulse.
-- [x] Teach AGENTS.md-aware and Claude agents to process all ready comments as one coherent turn.
+- [x] Teach agents to process all ready comments as one coherent turn.
 - [x] Keep handoff explicit and portable rather than injecting into a vendor chat surface.
 - [x] Adopt Markdown Collab as the user-facing brand without breaking legacy extension IDs.
 
@@ -62,6 +62,14 @@ Acceptance:
 - [x] Require an explicit warning confirmation before either deletion request reaches the extension host.
 - [x] Keep malformed documents read-only and discard stale local composer state only after the corresponding conversation disappears.
 - [x] Cover cancellation, confirmed requests, mutation behavior, line endings, and malformed input in automated checks.
+
+### Slice 2.3 - Portable skill and conversation preservation
+
+- [x] Replace separate `AGENTS.md` and `CLAUDE.md` setup files with one vendor-neutral Agent Skills package.
+- [x] Invoke the `markdown-collab` skill explicitly in every copied handoff prompt.
+- [x] Require explicit human authority before any thread or message deletion.
+- [x] Require a post-edit check that every original thread and message remains intact.
+- [x] Validate the skill package, copied prompt, release-kit contents, and a realistic preservation scenario.
 
 ### Slice 3 - Distribution confidence
 
@@ -81,13 +89,14 @@ Acceptance:
 ## Current evidence
 
 - TypeScript build, Webview JavaScript syntax, and whitespace checks pass using the Codex-bundled Node runtime.
-- All 28 core and review-model regression tests pass, including singular/plural agent-prompt generation and guarded deletion mutations.
+- All 29 core and review-model regression tests pass, including singular/plural skill-invoking prompts, the portable skill's preservation contract, and guarded deletion mutations.
 - A headless rendered-interaction harness confirms the ready label, copy request, and **Copied ✓** feedback state as well as five anchored markers, no visible raw IDs, three preserved composers, isolation when another thread is submitted, per-thread and delete-all confirmations, cancellation without a mutation request, confirmed deletion requests, keyboard thread navigation, re-anchor targeting, narrow-width readability, rail hiding/restoration, visible mutation notices, and disabled mutation controls for malformed data.
 - Rendered screenshots were inspected under simulated VS Code light, dark, and high-contrast tokens; the document/rail hierarchy, focused anchor, controls, and conversation history remain legible in each.
 - Production and development dependency audits report zero known vulnerabilities after upgrading the project-local packager and applying non-breaking lockfile fixes.
-- VSIX packaging succeeds and includes the runtime Markdown renderer and packaged Webview assets while excluding `.agents`, tests, source, and archived material.
+- VSIX packaging succeeds and includes the runtime Markdown renderer and packaged Webview assets while excluding `.agents`, the separately distributed product skill, tests, source, and archived material.
 - The lockfile passes `npm ci --dry-run`; the `0.0.10` packaged VSIX installs and enumerates as `simpliq.codex-collab` in an isolated VS Code extension directory.
-- `npm run test-kit` produces a portable, checksum-verified folder with the branded VSIX, standalone agent guidance, and installation README. Tagged builds publish the VSIX and complete `.tar.gz` archive through GitHub Releases.
+- `npm run test-kit` produces a portable, checksum-verified folder with the branded VSIX, portable Agent Skill, and installation README. Tagged builds publish the VSIX, complete `.tar.gz` archive, and a standalone skill archive through GitHub Releases.
+- The Agent Skills validator accepts `skills/markdown-collab/SKILL.md`; a fresh-agent forward test processed the one actionable thread in the five-thread fixture, preserved all five IDs and eight pre-existing messages, and changed no draft, closed, answered, anchor, or unrelated prose content.
 - The public [`v0.0.10-test.1` prerelease](https://github.com/simpliq-dev/markdown-collab/releases/tag/v0.0.10-test.1) passed its clean GitHub Actions build. The VSIX and `.tar.gz` assets were downloaded back from GitHub, their published SHA-256 digests matched, the archive contents were inspected, and the downloaded VSIX installed as `simpliq.codex-collab@0.0.10` in an isolated VS Code profile.
 - The stable [`v0.0.11` release](https://github.com/simpliq-dev/markdown-collab/releases/tag/v0.0.11) publishes the renamed repository's current assets as `markdown-collab-0.0.11.vsix` and `markdown-collab-0.0.11.tar.gz`, with standalone `AGENTS.md` and `CLAUDE.md` attachments and no test-only download naming.
 - Official VS Code documentation supports an opt-in custom text editor over the standard `TextDocument`.
@@ -97,6 +106,7 @@ Acceptance:
 ## Constraints and risks
 
 - The extension remains Markdown-only and file-backed; no external service or hidden conversation store.
+- Agent processing must treat existing thread blocks as durable human-owned history. Applying feedback is never implicit permission to delete it.
 - Review mode is not a WYSIWYG prose editor. Source editing remains native.
 - Markdown rendering must not enable raw HTML or implicit external resource loading.
 - Cursor compatibility is an explicit validation target, not an architectural assumption.
@@ -104,4 +114,4 @@ Acceptance:
 
 ## Resume point
 
-Install the public `v0.0.11` VSIX for final human acceptance of per-thread and delete-all confirmation behavior in the real editor. The complete clipboard-to-agent response loop and Cursor behavior remain separate validation targets because Cursor is not installed locally.
+Validate the new `markdown-collab` skill and release kit, then install the next packaged VSIX for final human acceptance of the complete clipboard-to-agent response loop. Cursor behavior remains a separate validation target because Cursor is not installed locally.

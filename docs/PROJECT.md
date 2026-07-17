@@ -13,7 +13,7 @@ The primary user is someone editing substantial Markdown with an agent and wanti
 - **Text and discussion stay visually coupled.** Selecting a marker opens its complete conversation in a contextual rail, highlights the anchor, and keeps the document in view.
 - **Several conversations can be in flight.** Each thread can retain its own unsaved composer state or file-backed draft while the human moves between threads.
 - **Submission is explicit.** Typing does not create an agent turn. The human chooses when to save a draft and when to submit it; `Ctrl+Enter` is the deliberate submit shortcut.
-- **Several submitted comments form one agent handoff.** The review top bar counts ready comments and copies one concise prompt for the human's existing agent conversation. The extension does not create or inject into a chat session.
+- **Several submitted comments form one agent handoff.** The review top bar counts ready comments and copies one concise prompt for the human's existing agent conversation. The prompt explicitly invokes the portable `markdown-collab` skill and reminds the agent to preserve every conversation. The extension does not create or inject into a chat session.
 - **The conversation is full-fidelity from the first turn.** History, authorship, pending state, anchored context, and a substantial composer are present from creation onward.
 - **Raw Markdown remains available.** Collaborative Review is an opt-in custom text editor over the same `TextDocument`; opening the source editor never converts or forks the file.
 - **The interface is document-first and calm.** Internal IDs and storage metadata are secondary. The dominant visual hierarchy is prose, contextual discussion, and clear next action.
@@ -26,13 +26,14 @@ The primary user is someone editing substantial Markdown with an agent and wanti
 3. Starting a conversation focuses a substantial composer anchored to that block. The human may type, leave, and start or revisit other threads without losing work.
 4. **Save draft** persists a `role=D` message in the Markdown file but does not make it actionable to the agent.
 5. **Submit** converts or appends the turn as `role=H`. That thread becomes waiting while other threads remain independently editable or submit-ready.
-6. **N comments ready** counts open threads awaiting an agent response. **Copy prompt** prepares one handoff that asks the current agent conversation to process them together.
-7. An agent reads every ready comment as one coherent turn, edits the document, and appends `role=A` responses. The review surface updates without replacing unrelated composer state.
+6. **N comments ready** counts open threads awaiting an agent response. **Copy prompt** prepares one handoff that explicitly invokes the `markdown-collab` skill, asks the current agent conversation to process the comments together, and forbids unrequested conversation deletion.
+7. An agent uses the skill to read every ready comment as one coherent turn, edit the document, append `role=A` responses, and verify that all existing threads and messages remain intact. The review surface updates without replacing unrelated composer state.
 8. The human can continue, resolve/reopen, re-anchor, browse all conversations, delete conversations with confirmation, or open the Markdown source.
 
 ## Durable boundaries
 
 - The extension is agent-neutral and does not call an LLM API.
+- Agent behaviour is distributed as one vendor-neutral Agent Skills package. Installation copies the package unchanged into the discovery directory supported by the chosen client; it does not require editing an existing `AGENTS.md` or `CLAUDE.md`.
 - The extension does not inject text into Codex, Claude, Cursor, or another vendor's chat surface. Clipboard handoff is explicit, inspectable, and portable.
 - Persist only `open|closed`; infer waiting/pending when the latest submitted message is human-authored.
 - Preserve the existing `CMT:THREAD` / `CMT:MSG` grammar unless a backward-compatible migration earns its cost.
@@ -42,7 +43,7 @@ The primary user is someone editing substantial Markdown with an agent and wanti
 
 ## Current reality
 
-The opt-in Collaborative Review custom editor now provides rendered Markdown, anchored markers, full conversation history, independent composers, guarded draft/submit/delete mutations, responsive layouts, keyboard navigation, and an all-thread activity view. A file-backed ready count and copied handoff prompt connect several submitted comments to one continuous external agent conversation without a vendor API.
+The opt-in Collaborative Review custom editor now provides rendered Markdown, anchored markers, full conversation history, independent composers, guarded draft/submit/delete mutations, responsive layouts, keyboard navigation, and an all-thread activity view. A file-backed ready count, explicit skill invocation, and copied handoff prompt connect several submitted comments to one continuous external agent conversation without a vendor API.
 
 The active reset is tracked in [plans/active/collaborative-review-reset.md](plans/active/collaborative-review-reset.md). Consequential rationale is in [DECISIONS.md](DECISIONS.md), and superseded material remains under [archive](archive/README.md) and [plans/archive](plans/archive/).
 
@@ -53,6 +54,7 @@ The active reset is tracked in [plans/active/collaborative-review-reset.md](plan
 - Selecting a thread and selecting its anchor are visibly and predictably connected.
 - Unsaved text in multiple composers survives thread switching and document refreshes.
 - Existing valid files remain backward compatible; malformed thread data is visible and never silently mutated.
+- Agent processing preserves every existing thread and message unless the human explicitly requests a specific deletion.
 - Keyboard-only operation, focus indication, theme adaptation, and basic screen-reader structure are intentional.
 - Automated core and review-model tests, TypeScript build, Webview security checks, and human workflow acceptance pass in VS Code.
 - Cursor is validated separately and any editor-specific limitations are documented rather than assumed away.

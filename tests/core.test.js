@@ -102,7 +102,7 @@ test("keeps the Markdown Collab showcase valid and multi-stage", () => {
   assert.equal(anchoredThreadIds.size, parsed.threads.length);
 });
 
-test("builds a concise agent handoff prompt from ready comments", () => {
+test("builds an explicit agent handoff prompt from ready comments", () => {
   const source = [
     "# Review",
     "",
@@ -122,7 +122,7 @@ test("builds a concise agent handoff prompt from ready comments", () => {
 
   assert.equal(
     buildAgentReviewPrompt(model),
-    "2 comments are ready for review in docs/brief.md. Process them together as one coherent turn."
+    "Use the markdown-collab skill. 2 comments are ready for review in docs/brief.md. Process them together as one coherent turn. Preserve every existing Markdown Collab conversation unless I explicitly ask you to delete it."
   );
   const oneComment = buildReviewModel(
     ["# Review", "", "Passage.", threadBlock()].join("\n"),
@@ -130,12 +130,23 @@ test("builds a concise agent handoff prompt from ready comments", () => {
   );
   assert.equal(
     buildAgentReviewPrompt(oneComment),
-    "1 comment is ready for review in brief.md. Process it."
+    "Use the markdown-collab skill. 1 comment is ready for review in brief.md. Process it. Preserve every existing Markdown Collab conversation unless I explicitly ask you to delete it."
   );
   assert.equal(
     buildAgentReviewPrompt(buildReviewModel("# No comments", "empty.md")),
     undefined
   );
+});
+
+test("keeps explicit conversation-preservation rules in the portable skill", () => {
+  const skill = fs.readFileSync("skills/markdown-collab/SKILL.md", "utf8");
+
+  assert.match(
+    skill,
+    /Never delete, replace, truncate, resolve, close, re-anchor, reorder, or rewrite an existing conversation unless the human explicitly asks/
+  );
+  assert.match(skill, /every original thread ID still appears exactly once/);
+  assert.match(skill, /every pre-existing message remains present and unchanged/);
 });
 
 test("unescapes comment delimiters in message bodies", () => {
