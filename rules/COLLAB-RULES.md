@@ -29,6 +29,7 @@ Do this:
 - **Human uses UI; agent edits files**: the human uses the editor UI; the agent’s output is direct edits to the Markdown file.
 - **Minimise churn**: smallest edits needed; do not reformat unrelated content.
 - **Don’t guess**: if required context is missing, ask clarifying questions.
+- **Preserve conversations**: every existing thread and message is human-owned history. Never delete or rewrite one unless the human explicitly requests that exact destructive action.
 - **Safety**: never introduce or echo secrets/tokens; redact if detected.
 
 ## 1) Thread block grammar (MVP)
@@ -126,6 +127,8 @@ When asked to “review comments” / “respond” / “process threads”, do:
    - Read the full message history.
    - Append exactly one new `CMT:MSG` block with `role=A` before the end marker.
 4) Don’t edit existing message blocks, don’t rewrite anchors, don’t touch unrelated Markdown.
+5) Don’t delete, close, resolve, re-anchor, or otherwise remove a conversation unless the human explicitly asks for that exact operation. Applying feedback does not imply deleting the feedback.
+6) Before finishing, verify that every original thread ID and pre-existing message remains present and unchanged.
 
 ### 4.2 Draft handling
 
@@ -144,13 +147,14 @@ Even though the extension supports **many threads**, agent systems work best whe
 
 Recommended prompt pattern:
 
-> “Open `<path/to/file.md>`. For each `CMT:THREAD` where `status=open` and the last `CMT:MSG` has `role=H`, append one new `CMT:MSG` with `role=A` answering the human. Do not modify other content.”
+> “Use the markdown-collab skill. Open `<path/to/file.md>`. For each `CMT:THREAD` where `status=open` and the last `CMT:MSG` has `role=H`, append one new `CMT:MSG` with `role=A` answering the human. Preserve every existing Markdown Collab conversation unless I explicitly ask you to delete it.”
 
 If you want it to process multiple files, explicitly enumerate them.
 
 ## 6) Safety / guardrails
 
 - Never take destructive actions (mass rewrites, renames, deletions) unless explicitly instructed.
+- Never delete a `CMT:THREAD` or `CMT:MSG` merely because its feedback was applied, answered, resolved, stale, or described as clean-up. Deletion requires an explicit human request naming the conversation or scope.
 - Never introduce secrets, tokens, private keys, or credentials.
 - If you detect secrets in the file, stop and ask the human to redact them.
 - If the file cannot be parsed safely (malformed thread blocks), do not attempt partial edits; ask the human to fix the file.

@@ -112,7 +112,7 @@ export function buildAgentReviewPrompt(model: ReviewModel): string | undefined {
     count === 1
       ? "Process it."
       : "Process them together as one coherent turn.";
-  return `${subject} ready for review in ${fileName}. ${action}`;
+  return `Use the markdown-collab skill. ${subject} ready for review in ${fileName}. ${action} Preserve every existing Markdown Collab conversation unless I explicitly ask you to delete it.`;
 }
 
 export function renderMarkdown(source: string): string {

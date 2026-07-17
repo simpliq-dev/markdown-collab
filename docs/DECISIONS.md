@@ -46,11 +46,21 @@
 
 **Why:** Cross-extension composer injection is not a supported, portable contract and would be brittle across Codex, Claude, Cursor, and future agents. Clipboard handoff preserves one continuous chat, keeps the human in control of sending, and leaves the extension agent-neutral.
 
-**Boundary:** Copying never sends a prompt, starts a task, attaches a file, or invokes a model. Repository-level `AGENTS.md` and `CLAUDE.md` explain how an agent should process the submitted comments and append responses.
+**Boundary:** Copying never sends a prompt, starts a task, attaches a file, or invokes a model. The copied text explicitly invokes the project-installed `markdown-collab` skill, which explains how to process submitted comments and preserve conversation history.
+
+## 2026-07-17 - Distribute agent behaviour as one portable skill
+
+**Decision:** Replace the standalone `AGENTS.md` and `CLAUDE.md` guidance files with one `markdown-collab` package following the open Agent Skills format. Keep one canonical `SKILL.md`, copy it unchanged into each client's supported project skill directory, and invoke it explicitly in every copied handoff prompt.
+
+**Why:** A real agent run applied the document edits and then deleted all inline conversations. The always-on guidance was easy to omit or weaken when merged into an existing project instruction file. An on-demand skill is vendor-neutral, does not require editing existing project guidance, and loads directly for the turn that needs it.
+
+**Safety contract:** Existing `CMT:THREAD` and `CMT:MSG` content is human-owned history. Reviewing, applying, resolving, or cleaning up feedback never grants deletion authority. The skill must preserve and verify all existing conversations unless the human explicitly requests a named deletion or clear destructive scope.
+
+**Compatibility:** The skill content follows the [Agent Skills specification](https://agentskills.io/specification). Discovery paths remain client-specific: Codex and Cursor support project `.agents/skills/`, while Claude Code uses project `.claude/skills/`.
 
 ## 2026-07-16 - Use Markdown Collab as the provider-neutral product brand
 
-**Decision:** Use **Markdown Collab** in the extension UI, commands, documentation, privacy language, and agent guidance. Keep the existing `codex-collab` package name and `codexCollab.*` contribution IDs as legacy technical identifiers for update and keybinding compatibility; use the renamed `markdown-collab` repository URL for active links.
+**Decision:** Use **Markdown Collab** in the extension UI, commands, documentation, privacy language, and agent skill. Keep the existing `codex-collab` package name and `codexCollab.*` contribution IDs as legacy technical identifiers for update and keybinding compatibility; use the renamed `markdown-collab` repository URL for active links.
 
 **Why:** The file format and workflow support VS Code and Cursor as editors and Codex, Claude, or another file-editing agent. A provider-specific brand understates that scope, while changing published extension identity would create an avoidable migration break.
 
@@ -62,7 +72,7 @@
 
 ## 2026-07-16 - Publish complete test kits as compressed tar archives
 
-**Decision:** GitHub Releases remains the primary direct distribution channel. Tagged builds publish a standalone VSIX and a complete `.tar.gz` test kit containing the VSIX, agent guidance, installation README, and checksum.
+**Decision:** GitHub Releases remains the primary direct distribution channel. Tagged builds publish a standalone VSIX, a complete `.tar.gz` test kit containing the VSIX, portable Agent Skill, installation README, and checksum, plus a separate skill archive for users who already have the extension.
 
 **Why:** The VSIX remains convenient for installation, while `.tar.gz` is a familiar, portable release format for a developer-oriented audience. Generated binaries stay out of repository history and every published asset is built from the tagged source by CI.
 

@@ -24,7 +24,7 @@ Built by [Simpliq](https://simpliq.io).
 
 ## [Latest release](https://github.com/simpliq-dev/markdown-collab/releases/latest)
 
-[Download the latest VSIX and `.tar.gz` release kit from GitHub Releases.](https://github.com/simpliq-dev/markdown-collab/releases/latest) The release kit also contains the agent guidance and a checksum.
+[Download the latest VSIX and `.tar.gz` release kit from GitHub Releases.](https://github.com/simpliq-dev/markdown-collab/releases/latest) The release kit also contains the portable agent skill and a checksum.
 
 ## Work through the document together
 
@@ -37,9 +37,9 @@ Built by [Simpliq](https://simpliq.io).
 
 ## Quick start
 
-1. Download the latest `.vsix` from [GitHub Releases](https://github.com/simpliq-dev/markdown-collab/releases/latest).
+1. Download the latest `.vsix` and agent skill, or the complete release kit, from [GitHub Releases](https://github.com/simpliq-dev/markdown-collab/releases/latest).
 2. In VS Code or Cursor, run **Extensions: Install from VSIX...** and select the file.
-3. Copy the supplied `AGENTS.md` or `CLAUDE.md` into the root of the project containing your Markdown files. If one already exists, merge in the Markdown Collab section.
+3. Copy the supplied `markdown-collab` skill folder into the project skill directory used by your agent.
 4. Open a `.md` file and run **Markdown Collab: Open Collaborative Review** from the Command Palette, editor title icon, or editor context menu.
 5. Hover a rendered block and choose **Start conversation**.
 
@@ -50,20 +50,21 @@ Built by [Simpliq](https://simpliq.io).
 3. Save comments as drafts while they are still taking shape. Submit only the turns that are ready for action.
 4. When several comments are waiting, choose **Copy prompt** beside **N comments ready**.
 5. Paste that prompt into your existing Codex, Claude, or other agent conversation and send it once.
-6. With the supplied project guidance, the agent can read the ready comments together, edit the document where appropriate, and append responses to the handled threads.
+6. The copied prompt invokes the `markdown-collab` skill. The agent can then read the ready comments together, edit the document where appropriate, append responses to the handled threads, and verify that no conversation was lost.
 
 Nothing is sent automatically, and Markdown Collab does not call a model. You decide what is ready and when the agent sees it.
 
-## Give your agent the project guidance
+## Install the agent skill
 
-The release kit includes two standalone guidance files:
+The release kit includes one portable [`markdown-collab` Agent Skill](skills/markdown-collab/SKILL.md). Copy the complete folder unchanged into the project skill directory used by your agent:
 
-- [`AGENTS.md`](agent-guidance/AGENTS.md) for Codex and other AGENTS.md-aware agents
-- [`CLAUDE.md`](agent-guidance/CLAUDE.md) for Claude
+- Codex or Cursor: `.agents/skills/markdown-collab/`
+- Claude Code: `.claude/skills/markdown-collab/`
+- Other Agent Skills clients: use the project skill directory documented by that client.
 
-Copy the appropriate file into the project you want to review. If that project already has an agent-instruction file, merge the Markdown Collab section into it rather than replacing the existing instructions.
+The skill follows the open [Agent Skills](https://agentskills.io) format and does not contain model- or vendor-specific instructions. Existing `AGENTS.md`, `CLAUDE.md`, rules, and other skills remain untouched.
 
-See [Install agent guidance](docs/install-agent-rules.md) for details. The file format itself is documented in [`COLLAB-RULES.md`](rules/COLLAB-RULES.md).
+See [Install the Markdown Collab skill](docs/install-agent-skill.md) for details. The file format itself is documented in [`COLLAB-RULES.md`](rules/COLLAB-RULES.md).
 
 ## The document remains the source of truth
 

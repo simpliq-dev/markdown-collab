@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import {
+  cp,
   copyFile,
   mkdir,
   readFile,
@@ -35,13 +36,11 @@ await mkdir(outputDir, { recursive: true });
 
 const outputVsix = path.join(outputDir, brandedVsixName);
 await copyFile(sourceVsix, outputVsix);
-await copyFile(
-  path.join(root, "agent-guidance", "AGENTS.md"),
-  path.join(outputDir, "AGENTS.md")
-);
-await copyFile(
-  path.join(root, "agent-guidance", "CLAUDE.md"),
-  path.join(outputDir, "CLAUDE.md")
+await mkdir(path.join(outputDir, "skills"), { recursive: true });
+await cp(
+  path.join(root, "skills", "markdown-collab"),
+  path.join(outputDir, "skills", "markdown-collab"),
+  { recursive: true }
 );
 
 const vsixBytes = await readFile(outputVsix);
