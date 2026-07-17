@@ -14,7 +14,7 @@ Read the rendered document, open a thread beside any passage and leave comments 
 
 When you are ready for the LLM to respond, Markdown Collab copies a short prompt for your existing Codex, Claude or other agent chat. The agent reads all ready comments together, makes related edits in one turn and replies in the relevant threads.
 
-Everything remains in Markdown. Threads are stored as hidden HTML comments in the file, so they travel with it through git. There is no hosted collaboration service or separate thread database, and Markdown Collab never sends a prompt or connects to a model.
+Everything remains in Markdown. Threads are stored as hidden HTML comments in the file, so they travel with it through git. There is no hosted collaboration service or separate thread database, and Markdown Collab never sends a prompt or connects to a model - you just prompt your agent to review your latest comments in the regular chat window.
 
 Built by [Simpliq](https://simpliq.io).
 
